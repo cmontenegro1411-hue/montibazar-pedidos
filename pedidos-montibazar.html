@@ -1,160 +1,421 @@
-<script>
-    const WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
-    
-    const productos = [
-        // HOGAR
-        {n: "SET CUCHILLOS DE COCINA 9 PIEZAS", p: 99, c: "hogar"},
-        {n: "PLANCHA ELECTRICA DE ROPA", p: 110, c: "hogar"},
-        {n: "SANDWICHERA 800W", p: 98, c: "hogar"},
-        {n: "BATIDORA DE MANO ELECTRICA 600W", p: 96, c: "hogar"},
-        {n: "CAFETERA ELECTRICA 625mL", p: 126, c: "hogar"},
-        {n: "LICUADORA STARLUX 2 EN 1 1.5L", p: 126, c: "hogar"},
-        {n: "HERVIDOR ELECTRICO 2.5L", p: 72, c: "hogar"},
-        {n: "MAQUINA TOSTADORA 650W", p: 110, c: "hogar"},
-        {n: "MINI BATIDORA ELECTRICA 260W", p: 67, c: "hogar"},
-        {n: "PLANCHA A VAPOR ELECTRICO", p: 80, c: "hogar"},
-        {n: "PLANCHA ALIZADORA DE CABELLO", p: 72, c: "hogar"},
-        {n: "SECADORA DE CABELLO DORADA", p: 72, c: "hogar"},
-        {n: "SET DE UTENSILIOS", p: 100, c: "hogar"},
-        {n: "JUEGO DE CUCHILLOS 6 PIEZAS", p: 65.5, c: "hogar"},
-        {n: "ORGANIZADOR ESTANTE DE BAÑO", p: 80, c: "hogar"},
-        {n: "ESTANTE ORGANIZADOR DE COCINA 3 NIVELES", p: 58, c: "hogar"},
-        {n: "CARRITO ORGANIZADOR 3 NIVELES CON RUEDAS", p: 95, c: "hogar"},
-        {n: "TERMO CON JUEGO DE DOS TAZAS", p: 57.5, c: "hogar"},
-        {n: "TERMO DE ACERO INOXIDABLE", p: 50, c: "hogar"},
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montibazar - Realizar Pedido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        // PARLANTES
-        {n: "PARLANTE G BT 2301", p: 57, c: "parlantes"},
-        {n: "PARLANTE G CON RELOJ 6en1", p: 72, c: "parlantes"},
-        {n: "MINI PARLANTE MAGNETICO G200", p: 63, c: "parlantes"},
-        {n: "MINI PARLANTE BLUETOOTH WIND 3S", p: 63, c: "parlantes"},
-        {n: "MINI PARLANTE CILINDRICA LUZ LED", p: 48, c: "parlantes"},
-        {n: "MINI PARLANTE CON LINTERNA Y PANEL SOLAR", p: 57, c: "parlantes"},
-        {n: "MINI PARLANTE CON LUZ LED", p: 57, c: "parlantes"},
-        {n: "MINI PARLANTE GRECTINE", p: 49.5, c: "parlantes"},
-        {n: "PARLANTE 4 PULGADAS CON LUZ RGB", p: 63, c: "parlantes"},
-        {n: "HIELERA PARLANTE BLUETOOTH CON LUZ RGB", p: 57, c: "parlantes"},
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
         
-        // LUMINARIAS
-        {n: "FOCO LAMPARA SOLAR RECARGABLE 30W", p: 57, c: "luminarias"},
-        {n: "FOCO LED A COLORES MUSICAL", p: 72, c: "luminarias"},
-        {n: "LAMPARA MATA MOSQUITOS 2 EN 1", p: 65, c: "luminarias"},
-        {n: "LUCES GIRNALDAS CON PANEL SOLAR", p: 118, c: "luminarias"},
-        {n: "LUZ LED SOLAR CON SENSOR DE MOVIMIENTO", p: 41, c: "luminarias"},
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
         
-        // JUEGOS
-        {n: "CONSOLA DE JUEGO CON MANDOS RECARGABLES", p: 220, c: "juegos"},
-        {n: "CONSOLA DE JUEGO DE 20000 JUEGOS", p: 124, c: "juegos"},
-        {n: "CONSOLA DE JUEGOS 3D CON DOS MANDOS X2", p: 202, c: "juegos"},
-        {n: "CONSOLA DE JUEGOS 3D GAMES 5G", p: 247, c: "juegos"},
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
         
-        // NOVEDADES
-        {n: "MAQUINA CORTADORA DE CABELLO INALAMBRICA", p: 110, c: "novedades"},
-        {n: "MAQUINA CORTADORA DE PELO RECARGABLE", p: 93, c: "novedades"},
-        {n: "MAQUINA CORTADO DE PELO DEXBO", p: 109, c: "novedades"},
-        {n: "HIDROLAVADORA 48V", p: 124, c: "novedades"},
-        {n: "INTERCOMUNICADOR PARA CASCO Q58 MAX", p: 140, c: "novedades"},
-        {n: "AUDIFONO BLUETOOTH PARA CASCO Q28", p: 278, c: "novedades"},
-        {n: "MORRAL FASHION ANTIROBO", p: 49, c: "novedades"},
-        {n: "LENTES DE SOL CON BLUETOOTH", p: 48, c: "novedades"},
-        {n: "CARGADOR INALAMBRICO 3 EN 1 CON RELOJ", p: 72, c: "novedades"},
-        {n: "PISTOLA DE BURBUJA 32 HOYOS", p: 34, c: "novedades"}
-    ];
-    
-    let cant = {};
-    
-    function render(filtro = 'todos') {
-        const cont = document.getElementById('productsList');
-        cont.innerHTML = '';
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
         
-        const productosFiltrados = filtro === 'todos' 
-            ? productos 
-            : productos.filter(p => p.c === filtro);
+        .form-section {
+            margin-bottom: 30px;
+        }
         
-        productosFiltrados.forEach((prod, i) => {
-            const globalIndex = productos.indexOf(prod);
-            cant[globalIndex] = cant[globalIndex] || 0;
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .category-filter {
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .product-price {
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .qty-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .qty-btn:hover {
+            background: #5568d3;
+        }
+        
+        .qty-input {
+            width: 60px;
+            text-align: center;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .total-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .total-label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .total-amount {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message, .error-message {
+            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        
+        .success-message {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .error-message {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Montibazar</h1>
+        <p class="subtitle">Completa tu pedido fácilmente</p>
+        
+        <form id="orderForm">
+            <div class="form-section">
+                <h2>📋 Tus Datos</h2>
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo *</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico *</label>
+                    <input type="email" id="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono / WhatsApp *</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección de Entrega *</label>
+                    <input type="text" id="direccion" required>
+                </div>
+            </div>
             
-            const div = document.createElement('div');
-            div.className = 'product-item';
-            div.innerHTML = `
-                <div class="product-info">
-                    <div class="product-name">${prod.n}</div>
-                    <div class="product-price">S/. ${prod.p}</div>
+            <div class="form-section">
+                <h2>📦 Selecciona tus Productos</h2>
+                <div class="category-filter">
+                    <label for="categoria">Filtrar por categoría:</label>
+                    <select id="categoria">
+                        <option value="todos">Todos los productos</option>
+                        <option value="hogar">Hogar</option>
+                        <option value="parlantes">Parlantes</option>
+                        <option value="luminarias">Luminarias</option>
+                        <option value="juegos">Juegos</option>
+                        <option value="novedades">Novedades</option>
+                    </select>
                 </div>
-                <div class="quantity-control">
-                    <button type="button" class="qty-btn" onclick="upd(${globalIndex},-1)">−</button>
-                    <input type="number" class="qty-input" id="q${globalIndex}" value="${cant[globalIndex]}" readonly>
-                    <button type="button" class="qty-btn" onclick="upd(${globalIndex},1)">+</button>
-                </div>
-            `;
-            cont.appendChild(div);
-        });
-    }
-    
-    function upd(i, ch) {
-        cant[i] = Math.max(0, (cant[i] || 0) + ch);
-        const inp = document.getElementById('q'+i);
-        if (inp) inp.value = cant[i];
-        calc();
-    }
-    
-    function calc() {
-        let tot = 0;
-        productos.forEach((p, i) => { tot += p.p * (cant[i] || 0); });
-        document.getElementById('totalAmount').textContent = tot.toFixed(0);
-    }
-    
-    document.getElementById('categoria').addEventListener('change', (e) => {
-        render(e.target.value);
-    });
-    
-    document.getElementById('orderForm').onsubmit = async (e) => {
-        e.preventDefault();
+                <div id="productsList"></div>
+            </div>
+            
+            <div class="total-section">
+                <div class="total-label">Total a pagar:</div>
+                <div class="total-amount">S/. <span id="totalAmount">0</span></div>
+            </div>
+            
+            <div class="form-section">
+                <h2>💬 Comentarios (Opcional)</h2>
+                <textarea id="comentarios" rows="3" placeholder="¿Alguna indicación especial?"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">Enviar Pedido</button>
+        </form>
         
-        let prods = [];
-        let tot = 0;
-        productos.forEach((p, i) => {
-            if (cant[i] > 0) {
-                prods.push(`${cant[i]}x ${p.n} (S/.${(p.p * cant[i]).toFixed(2)})`);
-                tot += p.p * cant[i];
+        <div class="success-message" id="successMessage">
+            ✅ ¡Pedido enviado! Recibirás un correo de confirmación pronto.
+        </div>
+        <div class="error-message" id="errorMessage">
+            ❌ Error al enviar. Por favor, intenta nuevamente.
+        </div>
+    </div>
+
+    <script>
+        const productos = [
+            {nombre: "SET CUCHILLOS DE COCINA 9 PIEZAS", precio: 99, categoria: "hogar"},
+            {nombre: "PLANCHA ELECTRICA DE ROPA", precio: 110, categoria: "hogar"},
+            {nombre: "SANDWICHERA 800W", precio: 98, categoria: "hogar"},
+            {nombre: "BATIDORA DE MANO ELECTRICA 600W", precio: 96, categoria: "hogar"},
+            {nombre: "CAFETERA ELECTRICA 625mL", precio: 126, categoria: "hogar"},
+            {nombre: "LICUADORA STARLUX 2 EN 1", precio: 126, categoria: "hogar"},
+            {nombre: "HERVIDOR ELECTRICO 2.5L", precio: 72, categoria: "hogar"},
+            {nombre: "MAQUINA TOSTADORA 650W", precio: 110, categoria: "hogar"},
+            {nombre: "MAQUINA CORTADORA DE CABELLO", precio: 110, categoria: "novedades"},
+            {nombre: "MAQUINA CORTADORA DE PELO RECARGABLE", precio: 93, categoria: "novedades"},
+            {nombre: "PARLANTE G BT 2301", precio: 57, categoria: "parlantes"},
+            {nombre: "MINI PARLANTE BLUETOOTH WIND 3S", precio: 63, categoria: "parlantes"},
+            {nombre: "MINI PARLANTE CON LUZ LED", precio: 57, categoria: "parlantes"},
+            {nombre: "PARLANTE 4 PULGADAS CON LUZ RGB", precio: 63, categoria: "parlantes"},
+            {nombre: "HIELERA PARLANTE BLUETOOTH", precio: 57, categoria: "parlantes"},
+            {nombre: "FOCO LAMPARA SOLAR 30W", precio: 57, categoria: "luminarias"},
+            {nombre: "FOCO LED A COLORES MUSICAL", precio: 72, categoria: "luminarias"},
+            {nombre: "LUZ LED SOLAR CON SENSOR", precio: 41, categoria: "luminarias"},
+            {nombre: "LAMPARA MATA MOSQUITOS 2 EN 1", precio: 65, categoria: "luminarias"},
+            {nombre: "CONSOLA DE JUEGOS 3D GAMES 5G", precio: 247, categoria: "juegos"},
+            {nombre: "CONSOLA DE JUEGO 20000 JUEGOS", precio: 124, categoria: "juegos"},
+            {nombre: "CONSOLA CON MANDOS RECARGABLES", precio: 220, categoria: "juegos"},
+            {nombre: "HIDROLAVADORA 48V", precio: 124, categoria: "novedades"},
+            {nombre: "INTERCOMUNICADOR PARA CASCO", precio: 140, categoria: "novedades"},
+            {nombre: "MORRAL FASHION ANTIROBO", precio: 49, categoria: "novedades"}
+        ];
+        
+        const WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
+        
+        let cantidades = {};
+        let todosProductos = [];
+        
+        function renderProductos(filtro = 'todos') {
+            const container = document.getElementById('productsList');
+            container.innerHTML = '';
+            
+            const productosFiltrados = filtro === 'todos' 
+                ? productos 
+                : productos.filter(p => p.categoria === filtro);
+            
+            productosFiltrados.forEach((producto, index) => {
+                const globalIndex = productos.indexOf(producto);
+                if (!cantidades[globalIndex]) cantidades[globalIndex] = 0;
+                
+                const div = document.createElement('div');
+                div.className = 'product-item';
+                div.innerHTML = `
+                    <div class="product-info">
+                        <div class="product-name">${producto.nombre}</div>
+                        <div class="product-price">S/. ${producto.precio}</div>
+                    </div>
+                    <div class="quantity-control">
+                        <button type="button" class="qty-btn" onclick="updateQuantity(${globalIndex}, -1)">−</button>
+                        <input type="number" class="qty-input" id="qty-${globalIndex}" value="${cantidades[globalIndex]}" min="0" readonly>
+                        <button type="button" class="qty-btn" onclick="updateQuantity(${globalIndex}, 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function updateQuantity(index, change) {
+            cantidades[index] = Math.max(0, (cantidades[index] || 0) + change);
+            const input = document.getElementById(`qty-${index}`);
+            if (input) input.value = cantidades[index];
+            calcularTotal();
+        }
+        
+        function calcularTotal() {
+            let total = 0;
+            productos.forEach((producto, index) => {
+                total += producto.precio * (cantidades[index] || 0);
+            });
+            document.getElementById('totalAmount').textContent = total.toFixed(0);
+        }
+        
+        document.getElementById('categoria').addEventListener('change', (e) => {
+            renderProductos(e.target.value);
+        });
+        
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const correo = document.getElementById('correo').value;
+            const telefono = document.getElementById('telefono').value;
+            const direccion = document.getElementById('direccion').value;
+            const comentarios = document.getElementById('comentarios').value;
+            
+            let productosSeleccionados = [];
+            let total = 0;
+            productos.forEach((producto, index) => {
+                if ((cantidades[index] || 0) > 0) {
+                    productosSeleccionados.push(`${cantidades[index]}x ${producto.nombre} (S/. ${producto.precio * cantidades[index]})`);
+                    total += producto.precio * cantidades[index];
+                }
+            });
+            
+            if (productosSeleccionados.length === 0) {
+                alert('Por favor selecciona al menos un producto');
+                return;
+            }
+            
+            const data = {
+                cliente: nombre,
+                correo: correo,
+                telefono: telefono,
+                direccion: direccion,
+                productos: productosSeleccionados.join(', '),
+                total: total.toString(),
+                comentarios: comentarios
+            };
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('orderForm').reset();
+                    cantidades = {};
+                    renderProductos();
+                    calcularTotal();
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                } else {
+                    throw new Error('Error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 5000);
             }
         });
         
-        if (prods.length === 0) {
-            alert('Selecciona al menos un producto');
-            return;
-        }
-        
-        const data = {
-            cliente: document.getElementById('nombre').value,
-            correo: document.getElementById('correo').value,
-            telefono: document.getElementById('telefono').value,
-            direccion: document.getElementById('direccion').value,
-            productos: prods.join(', '),
-            total: tot.toFixed(2),
-            comentarios: document.getElementById('comentarios').value || ''
-        };
-        
-        try {
-            await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            
-            document.getElementById('successMsg').style.display = 'block';
-            document.getElementById('orderForm').reset();
-            cant = {};
-            render();
-            setTimeout(() => {
-                document.getElementById('successMsg').style.display = 'none';
-            }, 5000);
-        } catch (err) {
-            console.error('Error:', err);
-            alert('Pedido enviado. Revisa tu base de datos en Notion.');
-        }
-    };
-    
-    render();
-</script>
+        renderProductos();
+    </script>
+</body>
+</html>
+
