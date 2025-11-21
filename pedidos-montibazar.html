@@ -335,7 +335,17 @@
             }
         };
         
-        render();
+            // Detectar si está en iframe y forzar carga en navegador
+        if (window.self !== window.top) {
+            window.top.location.href = window.location.href;
+        }
+        
+        // Verificar que el DOM esté listo antes de renderizar
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', render);
+        } else {
+            render();
+        }
     </script>
 </body>
 </html>
