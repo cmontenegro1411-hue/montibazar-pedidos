@@ -234,61 +234,55 @@
         }
         
         document.getElementById('orderForm').onsubmit = async function(e) {
-            e.preventDefault();
-            
-            let prods = [];
-            let tot = 0;
-            productos.forEach((p, i) => {
-                if (cant[i] > 0) {
-                    prods.push(cant[i] + 'x ' + p.n + ' (S/.' + (p.p * cant[i]).toFixed(2) + ')');
-                    tot += p.p * cant[i];
-                }
-            });
-            
-            if (prods.length === 0) {
-                alert('Selecciona al menos un producto');
-                return;
-            }
-            
-            const data = {
-                cliente: document.getElementById('nombre').value,
-                correo: document.getElementById('correo').value,
-                telefono: document.getElementById('telefono').value,
-                direccion: document.getElementById('direccion').value,
-                productos: prods.join(', '),
-                total: tot.toFixed(2),
-                comentarios: document.getElementById('comentarios').value || ''
-            };
-            
-            try {
-                await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
-                });
-                
-                document.getElementById('successMsg').style.display = 'block';
-                document.getElementById('orderForm').reset();
-                cant = {};
-                render('todos');
-                setTimeout(function() {
-                    document.getElementById('successMsg').style.display = 'none';
-                }, 5000);
-            } catch (err) {
-                console.error(err);
-                alert('Pedido enviado. Revisa Notion.');
-            }
-        };
-        
-        if (window.self !== window.top) {
-            window.top.location.href = window.location.href;
+    e.preventDefault();
+    
+    let prods = [];
+    let tot = 0;
+    productos.forEach((p, i) => {
+        if (cant[i] > 0) {
+            prods.push(cant[i] + 'x ' + p.n + ' (S/.' + (p.p * cant[i]).toFixed(2) + ')');
+            tot += p.p * cant[i];
         }
+    });
+    
+    if (prods.length === 0) {
+        alert('Selecciona al menos un producto');
+        return;
+    }
+    
+    const data = {
+        cliente: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        telefono: document.getElementById('telefono').value,
+        direccion: document.getElementById('direccion').value,
+        productos: prods.join(', '),
+        total: tot.toFixed(2),
+        comentarios: document.getElementById('comentarios').value || ''
+    };
+    
+    try {
+        await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
         
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() { render('todos'); });
-        } else {
-            render('todos');
-        }
-    </script>
-</body>
-</html>
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('orderForm').reset();
+        
+        // CORRECCIÓN: Resetear cantidades y selector de categoría
+        cant = {};
+        const catSelect = document.getElementById('categoria');
+        if (catSelect) catSelect.value = 'todos';
+        
+        // Re-renderizar todos los productos desde cero
+        render('todos');
+        
+        setTimeout(function() {
+            document.getElementById('successMsg').style.display = 'none';
+        }, 5000);
+    } catch (err) {
+        console.error(err);
+        alert('Pedido enviado. Revisa Notion.');
+    }
+};
