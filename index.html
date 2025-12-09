@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montibazar - Tu tienda de tecnología y hogar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #333;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .category-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .category-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .category-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        
+        .category-card p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .benefits {
+            background: #f8f9fa;
+            padding: 60px 20px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .benefit-item {
+            text-align: center;
+        }
+        
+        .benefit-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .benefit-item h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .benefit-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .featured-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: 700;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .section-title { font-size: 28px; }
+            .cta-section h2 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🛍️ Bienvenido a Montibazar</h1>
+        <p>Tecnología y productos para el hogar al mejor precio</p>
+        <a href="pedidos.html" class="cta-button">🛒 Ver Catálogo y Hacer Pedido</a>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Explora Nuestras Categorías</h2>
+        <div class="categories-grid">
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">🏡</div>
+                <h3>Hogar</h3>
+                <p>Electrodomésticos y accesorios para tu cocina</p>
+            </div>
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">🔊</div>
+                <h3>Parlantes</h3>
+                <p>Audio de alta calidad y portátil</p>
+            </div>
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">💡</div>
+                <h3>Luminarias</h3>
+                <p>Iluminación LED y solar</p>
+            </div>
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">🎮</div>
+                <h3>Juegos</h3>
+                <p>Consolas y entretenimiento</p>
+            </div>
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">⌚</div>
+                <h3>Smartwatch</h3>
+                <p>Relojes inteligentes</p>
+            </div>
+            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-icon">🎇</div>
+                <h3>Novedades</h3>
+                <p>Lo último en tecnología</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Productos Destacados</h2>
+        <div class="featured-products">
+            <div class="product-card">
+                <div class="product-image">🔌</div>
+                <div class="product-info">
+                    <h3>PLANCHA ELECTRICA</h3>
+                    <div class="product-price">S/. 110</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">🔊</div>
+                <div class="product-info">
+                    <h3>PARLANTE BT 2301</h3>
+                    <div class="product-price">S/. 57</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <h3>SMARTWATCH T900</h3>
+                    <div class="product-price">S/. 160</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">🎮</div>
+                <div class="product-info">
+                    <h3>CONSOLA 20000 JUEGOS</h3>
+                    <div class="product-price">S/. 124</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="benefits">
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">📦</div>
+                <h3>Envío Rápido</h3>
+                <p>Recibe tu pedido en 24-48 horas en Lima</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">💳</div>
+                <h3>Pago Fácil</h3>
+                <p>Yape, Plin o transferencia bancaria</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">✅</div>
+                <h3>Garantía</h3>
+                <p>Productos de calidad garantizada</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">💬</div>
+                <h3>Atención 24/7</h3>
+                <p>Estamos para ayudarte por WhatsApp</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2>¿Listo para hacer tu pedido?</h2>
+        <p>Compra fácil, rápido y seguro. Sin complicaciones.</p>
+        <a href="pedidos.html" class="cta-button">🛒 Ir al Catálogo</a>
+    </div>
+
+    <footer>
+        <p><strong>Montibazar</strong> - Tu tienda de confianza</p>
+        <p>📱 WhatsApp: 999-888-777</p>
+        <p>📧 Email: ventas@montibazar.com</p>
+        <p>© 2025 Montibazar. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
