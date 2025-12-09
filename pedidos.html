@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montibazar - Catálogo de Productos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 0;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Form Section */
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #f0f0ff;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+            min-height: 40px;
+        }
+        
+        .product-price {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .qty-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .qty-btn:hover {
+            background: #5568d3;
+        }
+        
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .qty-input {
+            width: 60px;
+            text-align: center;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Total Section */
+        .total-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .total-label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .total-amount {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Messages */
+        .message {
+            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .error {
+            background: #f44336;
+            color: white;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .back-link {
+                position: relative;
+                display: block;
+                margin-bottom: 10px;
+                top: 0;
+                left: 0;
+            }
+            
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .form-section h2 {
+                font-size: 20px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            
+            .product-image {
+                height: 160px;
+                font-size: 60px;
+            }
+            
+            .product-info {
+                padding: 15px;
+            }
+            
+            .product-name {
+                font-size: 14px;
+                min-height: 35px;
+            }
+            
+            .product-price {
+                font-size: 20px;
+            }
+            
+            .total-amount {
+                font-size: 36px;
+            }
+            
+            .filter-section {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+        <h1>🛒 Catálogo Montibazar</h1>
+        <p>Selecciona tus productos y completa tu pedido</p>
+    </div>
+
+    <div class="container">
+        <!-- Customer Form -->
+        <form id="orderForm">
+            <div class="form-section">
+                <h2>📋 Tus Datos</h2>
+                <div class="form-group">
+                    <label>Nombre Completo *</label>
+                    <input type="text" id="nombre" required placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico *</label>
+                    <input type="email" id="correo" required placeholder="ejemplo@correo.com">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono / WhatsApp *</label>
+                    <input type="tel" id="telefono" required placeholder="999 888 777">
+                </div>
+                <div class="form-group">
+                    <label>Dirección de Entrega *</label>
+                    <input type="text" id="direccion" required placeholder="Av. Ejemplo 123, Lima">
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div class="form-section">
+                <h2>📦 Selecciona tus Productos</h2>
+                
+                <!-- Category Filters -->
+                <div class="filter-section">
+                    <button type="button" class="filter-btn active" data-category="todos">Todos</button>
+                    <button type="button" class="filter-btn" data-category="hogar">🏡 Hogar</button>
+                    <button type="button" class="filter-btn" data-category="parlantes">🔊 Parlantes</button>
+                    <button type="button" class="filter-btn" data-category="luminarias">💡 Luminarias</button>
+                    <button type="button" class="filter-btn" data-category="juegos">🎮 Juegos</button>
+                    <button type="button" class="filter-btn" data-category="smartwatch">⌚ Smartwatch</button>
+                    <button type="button" class="filter-btn" data-category="novedades">🎇 Novedades</button>
+                </div>
+                
+                <!-- Products Grid -->
+                <div id="productsList" class="products-grid"></div>
+            </div>
+            
+            <!-- Total Section -->
+            <div class="total-section">
+                <div class="total-label">Total a pagar:</div>
+                <div class="total-amount">S/. <span id="totalAmount">0</span></div>
+            </div>
+            
+            <!-- Comments -->
+            <div class="form-section">
+                <h2>💬 Comentarios Adicionales</h2>
+                <textarea id="comentarios" rows="3" placeholder="¿Alguna indicación especial para tu pedido?"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">🛒 Enviar Pedido</button>
+        </form>
+        
+        <div id="successMsg" class="message success">✅ ¡Pedido enviado exitosamente! Nos pondremos en contacto contigo pronto.</div>
+        <div id="errorMsg" class="message error">❌ Error al enviar. Por favor, intenta nuevamente.</div>
+    </div>
+
+    <script>
+        const WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
+        
+        // Productos con emojis como placeholder (puedes cambiarlos por URLs de imágenes reales)
+        var productos = [
+            // HOGAR
+            {n: "SET CUCHILLOS 9 PIEZAS", p: 99, c: "hogar", img: "🔪"},
+            {n: "PLANCHA ELECTRICA", p: 110, c: "hogar", img: "🔌"},
+            {n: "SANDWICHERA 800W", p: 98, c: "hogar", img: "🥪"},
+            {n: "BATIDORA 600W", p: 96, c: "hogar", img: "🥄"},
+            {n: "CAFETERA 625mL", p: 126, c: "hogar", img: "☕"},
+            {n: "LICUADORA 2 EN 1", p: 126, c: "hogar", img: "🥤"},
+            {n: "HERVIDOR 2.5L", p: 72, c: "hogar", img: "🫖"},
+            {n: "TOSTADORA 650W", p: 110, c: "hogar", img: "🍞"},
+            {n: "MINI BATIDORA 260W", p: 67, c: "hogar", img: "🥄"},
+            {n: "PLANCHA A VAPOR", p: 80, c: "hogar", img: "👔"},
+            {n: "PLANCHA CABELLO", p: 72, c: "hogar", img: "💇"},
+            {n: "SECADORA CABELLO", p: 72, c: "hogar", img: "💨"},
+            {n: "SET UTENSILIOS", p: 100, c: "hogar", img: "🍴"},
+            {n: "JUEGO CUCHILLOS 6 PZS", p: 65.5, c: "hogar", img: "🔪"},
+            {n: "ORGANIZADOR BAÑO", p: 80, c: "hogar", img: "🛁"},
+            {n: "ESTANTE COCINA 3 NIV", p: 58, c: "hogar", img: "📚"},
+            {n: "CARRITO 3 NIVELES", p: 95, c: "hogar", img: "🛒"},
+            {n: "TERMO 2 TAZAS", p: 57.5, c: "hogar", img: "🍵"},
+            {n: "TERMO ACERO INOX", p: 50, c: "hogar", img: "🥤"},
+            
+            // PARLANTES
+            {n: "PARLANTE BT 2301", p: 57, c: "parlantes", img: "🔊"},
+            {n: "PARLANTE RELOJ 6en1", p: 72, c: "parlantes", img: "⏰"},
+            {n: "MINI PARLANTE G200", p: 63, c: "parlantes", img: "🔉"},
+            {n: "MINI PARLANTE WIND 3S", p: 63, c: "parlantes", img: "🔉"},
+            {n: "PARLANTE CILINDRICO LED", p: 48, c: "parlantes", img: "💡"},
+            {n: "PARLANTE LINTERNA SOLAR", p: 57, c: "parlantes", img: "🔦"},
+            {n: "MINI PARLANTE LED", p: 57, c: "parlantes", img: "🔊"},
+            {n: "PARLANTE GRECTINE", p: 49.5, c: "parlantes", img: "🔊"},
+            {n: "PARLANTE 4 PULGADAS RGB", p: 63, c: "parlantes", img: "🌈"},
+            {n: "HIELERA PARLANTE RGB", p: 57, c: "parlantes", img: "🧊"},
+            {n: "PARLANTE FLIP 7 LED", p: 60, c: "parlantes", img: "🔊"},
+            {n: "PARLANTE 8 PULGADAS RGB", p: 75, c: "parlantes", img: "🔊"},
+            
+            // LUMINARIAS
+            {n: "FOCO SOLAR 30W", p: 57, c: "luminarias", img: "💡"},
+            {n: "FOCO LED MUSICAL", p: 72, c: "luminarias", img: "🎵"},
+            {n: "LAMPARA MATA MOSQUITOS", p: 65, c: "luminarias", img: "🦟"},
+            {n: "LUCES GUIRNALDAS SOLAR", p: 118, c: "luminarias", img: "✨"},
+            {n: "LUZ SOLAR SENSOR", p: 41, c: "luminarias", img: "🌙"},
+            
+            // JUEGOS
+            {n: "CONSOLA MANDOS RECARGABLES", p: 220, c: "juegos", img: "🎮"},
+            {n: "CONSOLA 20000 JUEGOS", p: 124, c: "juegos", img: "🕹️"},
+            {n: "CONSOLA 3D X2", p: 202, c: "juegos", img: "🎮"},
+            {n: "CONSOLA 3D GAMES 5G", p: 247, c: "juegos", img: "🎮"},
+            
+            // SMARTWATCH
+            {n: "SMARTWATCH MILITAR PRO3", p: 150, c: "smartwatch", img: "⌚"},
+            {n: "SMARTWATCH MILITAR G1", p: 145, c: "smartwatch", img: "⌚"},
+            {n: "SMARTWATCH T900 PRO MAX", p: 160, c: "smartwatch", img: "⌚"},
+            {n: "SMARTWATCH T1000 ULTRA", p: 170, c: "smartwatch", img: "⌚"},
+            {n: "SMARTWATCH REDONDO", p: 140, c: "smartwatch", img: "⌚"},
+            {n: "SMARTWATCH 2EN1 AUDIFONO", p: 180, c: "smartwatch", img: "🎧"},
+            
+            // NOVEDADES
+            {n: "CORTADORA CABELLO INALAMBRICA", p: 110, c: "novedades", img: "💇"},
+            {n: "CORTADORA PELO RECARGABLE", p: 93, c: "novedades", img: "✂️"},
+            {n: "CORTADORA DEXBO", p: 109, c: "novedades", img: "✂️"},
+            {n: "HIDROLAVADORA 48V", p: 124, c: "novedades", img: "💦"},
+            {n: "INTERCOMUNICADOR CASCO", p: 140, c: "novedades", img: "🎤"},
+            {n: "AUDIFONO CASCO Q28", p: 278, c: "novedades", img: "🎧"},
+            {n: "MORRAL ANTIROBO", p: 49, c: "novedades", img: "🎒"},
+            {n: "LENTES SOL BLUETOOTH", p: 48, c: "novedades", img: "🕶️"},
+            {n: "CARGADOR INALAMBRICO 3EN1", p: 72, c: "novedades", img: "🔋"},
+            {n: "PISTOLA BURBUJA 32", p: 34, c: "novedades", img: "🫧"}
+        ];
+        
+        var cant = {};
+        var currentFilter = 'todos';
+        
+        // Render products
+        function render(filtro) {
+            filtro = filtro || 'todos';
+            currentFilter = filtro;
+            
+            var cont = document.getElementById('productsList');
+            if (!cont) return;
+            
+            cont.innerHTML = '';
+            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) { return p.c === filtro; });
+            
+            if (filtrados.length === 0) {
+                cont.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No hay productos en esta categoría</p></div>';
+                return;
+            }
+            
+            for (var j = 0; j < filtrados.length; j++) {
+                var prod = filtrados[j];
+                var idx = productos.indexOf(prod);
+                
+                if (typeof cant[idx] === 'undefined') {
+                    cant[idx] = 0;
+                }
+                
+                var card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = '<div class="product-image">' + prod.img + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
+                cont.appendChild(card);
+            }
+        }
+        
+        // Update quantity
+        function upd(i, ch) {
+            cant[i] = Math.max(0, (cant[i] || 0) + ch);
+            var inp = document.getElementById('q' + i);
+            if (inp) inp.value = cant[i];
+            calc();
+        }
+        
+        // Calculate total
+        function calc() {
+            var tot = 0;
+            for (var i = 0; i < productos.length; i++) {
+                tot += productos[i].p * (cant[i] || 0);
+            }
+            document.getElementById('totalAmount').textContent = tot.toFixed(0);
+        }
+        
+        // Filter buttons
+        var filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                render(this.getAttribute('data-category'));
+            });
+        });
+        
+        // Form submit
+        document.getElementById('orderForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            var prods = [];
+            var tot = 0;
+            
+            for (var i = 0; i < productos.length; i++) {
+                if (cant[i] > 0) {
+                    prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
+                    tot += productos[i].p * cant[i];
+                }
+            }
+            
+            if (prods.length === 0) {
+                alert('Por favor, selecciona al menos un producto');
+                return;
+            }
+            
+            var data = {
+                cliente: document.getElementById('nombre').value,
+                correo: document.getElementById('correo').value,
+                telefono: document.getElementById('telefono').value,
+                direccion: document.getElementById('direccion').value,
+                productos: prods.join(', '),
+                total: tot.toFixed(2),
+                comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
+            };
+            
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }).then(function() {
+                document.getElementById('successMsg').style.display = 'block';
+                document.getElementById('orderForm').reset();
+                
+                cant = {};
+                render(currentFilter);
+                calc();
+                
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                
+                setTimeout(function() {
+                    document.getElementById('successMsg').style.display = 'none';
+                }, 5000);
+            }).catch(function(err) {
+                console.error(err);
+                document.getElementById('successMsg').style.display = 'block';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                setTimeout(function() {
+                    document.getElementById('successMsg').style.display = 'none';
+                }, 5000);
+            });
+        };
+        
+        // Initialize
+        render('todos');
+    </script>
+</body>
+</html>
