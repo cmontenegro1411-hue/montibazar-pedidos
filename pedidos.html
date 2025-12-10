@@ -273,25 +273,6 @@
             transform: translateY(0);
         }
         
-        .message {
-            display: none;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 20px;
-            font-weight: 600;
-        }
-        
-        .success {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .error {
-            background: #f44336;
-            color: white;
-        }
-        
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -303,7 +284,7 @@
             margin-bottom: 20px;
         }
         
-        /* Modal */
+        /* Modal de Productos */
         .modal {
             display: none;
             position: fixed;
@@ -450,6 +431,89 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         
+        /* Modal de Confirmación */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s;
+        }
+        
+        .confirmation-content {
+            background: white;
+            margin: 15% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s;
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .confirmation-icon-inner {
+            font-size: 80px;
+            animation: bounce 0.6s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        .confirmation-body {
+            padding: 40px 30px 30px 30px;
+        }
+        
+        .confirmation-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .confirmation-message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .confirmation-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .confirmation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .confirmation-btn:active {
+            transform: translateY(0);
+        }
+        
         @media screen and (max-width: 768px) {
             .header h1 { font-size: 24px; }
             .back-link { position: relative; display: block; margin-bottom: 10px; top: 0; left: 0; }
@@ -484,6 +548,26 @@
             
             .modal-price {
                 font-size: 28px;
+            }
+            
+            .confirmation-content {
+                width: 85%;
+            }
+            
+            .confirmation-icon {
+                padding: 30px;
+            }
+            
+            .confirmation-icon-inner {
+                font-size: 60px;
+            }
+            
+            .confirmation-title {
+                font-size: 24px;
+            }
+            
+            .confirmation-message {
+                font-size: 14px;
             }
         }
         
@@ -555,12 +639,9 @@
             
             <button type="submit" class="submit-btn">🛒 Enviar Pedido</button>
         </form>
-        
-        <div id="successMsg" class="message success">✅ ¡Pedido enviado exitosamente! Nos pondremos en contacto contigo pronto.</div>
-        <div id="errorMsg" class="message error">❌ Error al enviar. Por favor, intenta nuevamente.</div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal de Productos -->
     <div id="productModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -580,6 +661,20 @@
                     </div>
                 </div>
                 <button type="button" class="modal-add-btn" onclick="addToCartFromModal()">Agregar al carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">
+                <div class="confirmation-icon-inner">✅</div>
+            </div>
+            <div class="confirmation-body">
+                <h2 class="confirmation-title">¡Pedido Enviado!</h2>
+                <p class="confirmation-message">Tu pedido ha sido enviado exitosamente. Nos pondremos en contacto contigo pronto para coordinar la entrega.</p>
+                <button class="confirmation-btn" onclick="closeConfirmationModal()">Aceptar</button>
             </div>
         </div>
     </div>
@@ -739,7 +834,6 @@
             var qty = parseInt(document.getElementById('modalQty').value);
             if (qty > 0) {
                 closeModal();
-                window.scrollTo({top: document.getElementById('productsList').offsetTop - 100, behavior: 'smooth'});
             } else {
                 alert('Por favor, selecciona al menos 1 unidad');
             }
@@ -818,27 +912,26 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             }).then(function() {
-                document.getElementById('successMsg').style.display = 'block';
+                showConfirmationModal();
                 document.getElementById('orderForm').reset();
-                
                 cant = {};
                 render(currentFilter);
                 calc();
-                
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                
-                setTimeout(function() {
-                    document.getElementById('successMsg').style.display = 'none';
-                }, 5000);
             }).catch(function(err) {
                 console.error(err);
-                document.getElementById('successMsg').style.display = 'block';
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                setTimeout(function() {
-                    document.getElementById('successMsg').style.display = 'none';
-                }, 5000);
+                showConfirmationModal();
             });
         };
+        
+        function showConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
         
         render('todos');
     </script>
