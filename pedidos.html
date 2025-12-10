@@ -879,49 +879,54 @@
             });
         });
         
-        document.getElementById('orderForm').onsubmit = function(e) {
+            document.getElementById('orderForm').onsubmit = function(e) {
             e.preventDefault();
-            
+    
             var prods = [];
             var tot = 0;
-            
+    
             for (var i = 0; i < productos.length; i++) {
-                if (cant[i] > 0) {
-                    prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
-                    tot += productos[i].p * cant[i];
-                }
+            if (cant[i] > 0) {
+                prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
+                tot += productos[i].p * cant[i];
             }
-            
+        }
+    
             if (prods.length === 0) {
-                alert('Por favor, selecciona al menos un producto');
-                return;
-            }
-            
-            var data = {
-                cliente: document.getElementById('nombre').value,
-                correo: document.getElementById('correo').value,
-                telefono: document.getElementById('telefono').value,
-                direccion: document.getElementById('direccion').value,
-                productos: prods.join(', '),
-                total: tot.toFixed(2),
-                comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
-            };
-            
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            }).then(function() {
-                showConfirmationModal();
-                document.getElementById('orderForm').reset();
-                cant = {};
-                render(currentFilter);
-                calc();
-            }).catch(function(err) {
-                console.error(err);
-                showConfirmationModal();
-            });
-        };
+            alert('Por favor, selecciona al menos un producto');
+            return;
+        }
+    
+    var data = {
+        cliente: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        telefono: document.getElementById('telefono').value,
+        direccion: document.getElementById('direccion').value,
+        productos: prods.join(', '),
+        total: tot.toFixed(2),
+        comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
+    };
+    
+    // Mostrar modal inmediatamente
+    showConfirmationModal();
+    
+    // Limpiar formulario
+    document.getElementById('orderForm').reset();
+    cant = {};
+    render(currentFilter);
+    calc();
+    
+    // Enviar en segundo plano
+    fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    }).then(function(response) {
+        console.log('Pedido enviado correctamente');
+    }).catch(function(err) {
+        console.error('Error al enviar:', err);
+    });
+};
         
         function showConfirmationModal() {
             document.getElementById('confirmationModal').style.display = 'block';
@@ -937,3 +942,4 @@
     </script>
 </body>
 </html>
+
