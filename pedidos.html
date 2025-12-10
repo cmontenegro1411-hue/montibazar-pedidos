@@ -19,6 +19,7 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .header h1 {
@@ -82,8 +83,7 @@
         input[type="text"],
         input[type="email"],
         input[type="tel"],
-        textarea,
-        select {
+        textarea {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
@@ -93,8 +93,7 @@
         }
         
         input:focus,
-        textarea:focus,
-        select:focus {
+        textarea:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -157,14 +156,6 @@
             align-items: center;
             justify-content: center;
             font-size: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         
         .product-info {
@@ -291,22 +282,6 @@
             color: white;
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: #667eea;
-        }
-        
-        .loading-spinner {
-            font-size: 60px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -319,75 +294,24 @@
         }
         
         @media screen and (max-width: 768px) {
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .back-link {
-                position: relative;
-                display: block;
-                margin-bottom: 10px;
-                top: 0;
-                left: 0;
-            }
-            
-            .container {
-                padding: 20px 10px;
-            }
-            
-            .form-section {
-                padding: 20px;
-            }
-            
-            .form-section h2 {
-                font-size: 20px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 15px;
-            }
-            
-            .product-image {
-                height: 160px;
-                font-size: 60px;
-            }
-            
-            .product-info {
-                padding: 15px;
-            }
-            
-            .product-name {
-                font-size: 14px;
-                min-height: 35px;
-            }
-            
-            .product-price {
-                font-size: 20px;
-            }
-            
-            .total-amount {
-                font-size: 36px;
-            }
-            
-            .filter-section {
-                gap: 8px;
-            }
-            
-            .filter-btn {
-                padding: 10px 18px;
-                font-size: 13px;
-            }
+            .header h1 { font-size: 24px; }
+            .back-link { position: relative; display: block; margin-bottom: 10px; top: 0; left: 0; }
+            .container { padding: 20px 10px; }
+            .form-section { padding: 20px; }
+            .form-section h2 { font-size: 20px; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+            .product-image { height: 160px; font-size: 60px; }
+            .product-info { padding: 15px; }
+            .product-name { font-size: 14px; min-height: 35px; }
+            .product-price { font-size: 20px; }
+            .total-amount { font-size: 36px; }
+            .filter-section { gap: 8px; }
+            .filter-btn { padding: 10px 18px; font-size: 13px; }
         }
         
         @media screen and (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .product-image {
-                height: 200px;
-            }
+            .products-grid { grid-template-columns: 1fr; }
+            .product-image { height: 200px; }
         }
     </style>
 </head>
@@ -423,14 +347,17 @@
             <div class="form-section">
                 <h2>📦 Selecciona tus Productos</h2>
                 
-                <div class="filter-section" id="filterSection"></div>
-                
-                <div id="productsList" class="products-grid">
-                    <div class="loading">
-                        <div class="loading-spinner">⏳</div>
-                        <p>Cargando productos...</p>
-                    </div>
+                <div class="filter-section">
+                    <button type="button" class="filter-btn active" data-category="todos">🛍️ Todos</button>
+                    <button type="button" class="filter-btn" data-category="hogar">🏡 Hogar</button>
+                    <button type="button" class="filter-btn" data-category="parlantes">🔊 Parlantes</button>
+                    <button type="button" class="filter-btn" data-category="luminarias">💡 Luminarias</button>
+                    <button type="button" class="filter-btn" data-category="juegos">🎮 Juegos</button>
+                    <button type="button" class="filter-btn" data-category="smartwatch">⌚ Smartwatch</button>
+                    <button type="button" class="filter-btn" data-category="novedades">🎇 Novedades</button>
                 </div>
+                
+                <div id="productsList" class="products-grid"></div>
             </div>
             
             <div class="total-section">
@@ -451,72 +378,96 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN - Reemplaza estas URLs
-        const PRODUCTOS_API_URL = 'https://hook.us2.make.com/1hlaic9hd9obar76t5zls0opugph4rso';
-        const PEDIDOS_WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
+        const WEBHOOK_URL = 'TU_URL_DEL_WEBHOOK_AQUI';
         
-        var productos = [];
+        var productos = [
+            // HOGAR (21 productos)
+            {n:"BATIDORA DE MANO ELECTRICA DE 600W",p:96,c:"hogar",img:"🥄"},
+            {n:"CAFETERA ELECTRICA 625mL",p:126,c:"hogar",img:"☕"},
+            {n:"CARRITO ORGANIZADOR 3 NIVELES CON RUEDAS",p:95,c:"hogar",img:"🛒"},
+            {n:"ESTANTE ORGANIZADOR DE COCINA 3 NIVELES",p:58,c:"hogar",img:"📚"},
+            {n:"HERVIDOR ELECTRICO 2.5L BOTON AUTOMATICO",p:72,c:"hogar",img:"🫖"},
+            {n:"HERVIDOR ELECTRICO PLASTICO 2.3L",p:72,c:"hogar",img:"🫖"},
+            {n:"JUEGO DE CUCHILLOS DE 6 PIEZAS",p:65.5,c:"hogar",img:"🔪"},
+            {n:"LICUADORA STARLUX 2 EN 1 1.5LITROS",p:126,c:"hogar",img:"🥤"},
+            {n:"MAQUINA TOSTADORA 650W",p:110,c:"hogar",img:"🍞"},
+            {n:"MINI BATIDORA ELECTRICA DE 260W",p:67,c:"hogar",img:"🥄"},
+            {n:"ORGANIZADOR ESTANTE DE BAÑO",p:80,c:"hogar",img:"🛁"},
+            {n:"PLANCHA A VAPOR ELECTRICO",p:80,c:"hogar",img:"👔"},
+            {n:"PLANCHA ALIZADORA DE CABELLO",p:72,c:"hogar",img:"💇"},
+            {n:"PLANCHA ELECTRICA DE ROPA",p:110,c:"hogar",img:"🔌"},
+            {n:"SANDWICHERA 800W BM 002A",p:98,c:"hogar",img:"🥪"},
+            {n:"SANDWICHERA 800W BM 002D",p:98,c:"hogar",img:"🥪"},
+            {n:"SECADORA DE CABELLO DORADA",p:72,c:"hogar",img:"💨"},
+            {n:"SET CUCHILLOS DE COCINA 9 PIEZAS",p:99,c:"hogar",img:"🔪"},
+            {n:"SET DE UTENSILIOS",p:100,c:"hogar",img:"🍴"},
+            {n:"TERMO CON JUEGO DE DOS TAZAS VACUUM",p:57.5,c:"hogar",img:"🍵"},
+            {n:"TERMO DE ACERO INOXIDABLE CON JUEGO DE DOS TAZAS",p:50,c:"hogar",img:"🥤"},
+            
+            // JUEGOS (4 productos)
+            {n:"CONSOLA DE JUEGO CON MANDOS RECARGABLES",p:220,c:"juegos",img:"🎮"},
+            {n:"CONSOLA DE JUEGO DE 20 000 JUEGOS",p:124,c:"juegos",img:"🕹️"},
+            {n:"CONSOLA DE JUEGOS 3D CON DOS MANDOS X2",p:202,c:"juegos",img:"🎮"},
+            {n:"CONSOLA DE JUEGOS 3D GAMES 5G",p:247,c:"juegos",img:"🎮"},
+            
+            // LUMINARIAS (5 productos)
+            {n:"FOCO LAMPARA SOLAR RECARGABLE 30W",p:57,c:"luminarias",img:"💡"},
+            {n:"FOCO LED A COLORES MUSICAL",p:72,c:"luminarias",img:"🎵"},
+            {n:"LAMPARA MATA MOSQUITOS 2 EN 1",p:65,c:"luminarias",img:"🦟"},
+            {n:"LUCES GIRNALDAS CON PANEL SOLAR",p:118,c:"luminarias",img:"✨"},
+            {n:"LUZ LED SOLAR CON SENSOR DE MOVIMIENTO",p:41,c:"luminarias",img:"🌙"},
+            
+            // NOVEDADES (13 productos)
+            {n:"AUDIFONO BLUETOOTH PARA CASCO Q28",p:278,c:"novedades",img:"🎧"},
+            {n:"CARGADOR INALAMBRICO 3 EN 1 RELOJ DESPERTADOR CON TEMPERATURA",p:72,c:"novedades",img:"🔋"},
+            {n:"HIDROLAVADORA 48V",p:124,c:"novedades",img:"💦"},
+            {n:"HIELERA PARLANTE BLUETOOH CON LUZ RGB",p:57,c:"novedades",img:"🧊"},
+            {n:"INTERCOMUNICADOR PARA CASCO Q58 MAX",p:140,c:"novedades",img:"🎤"},
+            {n:"LENTES DE SOL CON BLUETOOTH",p:48,c:"novedades",img:"🕶️"},
+            {n:"MAQUINA CORTADO DE PELO DEXBO",p:109,c:"novedades",img:"✂️"},
+            {n:"MAQUINA CORTADORA DE CABELLO INALAMBRICA",p:110,c:"novedades",img:"💇"},
+            {n:"MAQUINA CORTADORA DE PELO RECARGABLE",p:93,c:"novedades",img:"✂️"},
+            {n:"MORRAL FASHION ANTIROBO",p:49,c:"novedades",img:"🎒"},
+            {n:"PARLANTE G BT 2301",p:57,c:"novedades",img:"🔊"},
+            {n:"PARLANTE G CON RELOJ 6en1",p:72,c:"novedades",img:"⏰"},
+            {n:"PISTOLA DE BURBUJA 32 HOYOS",p:34,c:"novedades",img:"🫧"},
+            
+            // PARLANTES (22 productos)
+            {n:"MINI PARLANTE MAGNETICO G200",p:63,c:"parlantes",img:"🔉"},
+            {n:"MINI PARLANTE BLUETOOTH WIND 3S",p:63,c:"parlantes",img:"🔉"},
+            {n:"MINI PARLANTE CILINDRICA LUZ LED",p:48,c:"parlantes",img:"💡"},
+            {n:"MINI PARLANTE CON LINTERNA Y PANEL SOLAR",p:57,c:"parlantes",img:"🔦"},
+            {n:"MINI PARLANTE CON LUZ LED",p:57,c:"parlantes",img:"🔊"},
+            {n:"MINI PARLANTE GRECTINE",p:49.5,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE 4 PULGADAS CON LUZ RGB",p:63,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE LAMPARA TOUCH TACTIL",p:41,c:"parlantes",img:"💡"},
+            {n:"PARLANTE 4PULGADAS CON LINTERNA Y PANEL",p:65,c:"parlantes",img:"🔦"},
+            {n:"PARLANTE 8 PULGADAS CON LUCES RGB",p:88,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE ALARMA PARA MOTO 2.5\" BOSSNEY",p:105,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE ALARMA PARA MOTO 3\"",p:120,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE DE 6.5 X 2 CON MICROFONO",p:126,c:"parlantes",img:"🎤"},
+            {n:"PARLANTE FLIP 7 CON LUZ LED",p:84,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE P10 PRO CON LUCES RGB",p:120,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE PANEL SOLAR DE 4 PULGADAS",p:93,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE REDONDO LED",p:96,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE ZEALOT S56 COLOR NEGRO 10W",p:156,c:"parlantes",img:"🔊"},
+            {n:"PARLANTE ZEALOT S77 COLOR NEGRO 5W",p:125,c:"parlantes",img:"🔊"},
+            {n:"RADIO BLUETOOTH CON LINTERNA",p:79,c:"parlantes",img:"📻"},
+            {n:"RADIO BOSSNEY BS R8027BTS CON PANEL SOLAR",p:80,c:"parlantes",img:"📻"},
+            {n:"RADIO BOSSNEY CON 3 BANDAS",p:88,c:"parlantes",img:"📻"},
+            
+            // SMARTWATCH (6 productos)
+            {n:"SMART WATCH CON AUDIFONO BLUETOOTH 2 EN1",p:264,c:"smartwatch",img:"⌚"},
+            {n:"SMART WATCH REDONDO MILITAR",p:218,c:"smartwatch",img:"⌚"},
+            {n:"SMARTWATCH MILITAR G1",p:249,c:"smartwatch",img:"⌚"},
+            {n:"SMARTWATCH MILITAR PRO3",p:234,c:"smartwatch",img:"⌚"},
+            {n:"SMARTWATCH T1000 ULTRA 3",p:72,c:"smartwatch",img:"⌚"},
+            {n:"SMARTWATCH T900 PRO MAX L",p:72,c:"smartwatch",img:"⌚"}
+        ];
+        
         var cant = {};
         var currentFilter = 'todos';
         
-        // Cargar productos desde Notion vía Make
-        async function cargarProductos() {
-            try {
-                const response = await fetch(PRODUCTOS_API_URL);
-                const data = await response.json();
-                productos = data;
-                
-                generarFiltros();
-                render('todos');
-            } catch (error) {
-                console.error('Error cargando productos:', error);
-                document.getElementById('productsList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Error al cargar productos. Por favor, recarga la página.</p></div>';
-            }
-        }
-        
-        // Generar botones de filtro dinámicamente
-        function generarFiltros() {
-            var categorias = ['todos'];
-            productos.forEach(function(p) {
-                if (p.categoria && categorias.indexOf(p.categoria.toLowerCase()) === -1) {
-                    categorias.push(p.categoria.toLowerCase());
-                }
-            });
-            
-            var filterSection = document.getElementById('filterSection');
-            filterSection.innerHTML = '';
-            
-            var emojis = {
-                'todos': '🛍️',
-                'hogar': '🏡',
-                'parlantes': '🔊',
-                'luminarias': '💡',
-                'juegos': '🎮',
-                'smartwatch': '⌚',
-                'novedades': '🎇',
-                'camaras': '📷',
-                'audifonos': '🎧',
-                'herramientas': '🛠️'
-            };
-            
-            categorias.forEach(function(cat) {
-                var btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
-                btn.setAttribute('data-category', cat);
-                btn.textContent = (emojis[cat] || '') + ' ' + cat.charAt(0).toUpperCase() + cat.slice(1);
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(function(b) {
-                        b.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    render(cat);
-                });
-                filterSection.appendChild(btn);
-            });
-        }
-        
-        // Renderizar productos
         function render(filtro) {
             filtro = filtro || 'todos';
             currentFilter = filtro;
@@ -525,9 +476,7 @@
             if (!cont) return;
             
             cont.innerHTML = '';
-            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) {
-                return p.categoria && p.categoria.toLowerCase() === filtro;
-            });
+            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) { return p.c === filtro; });
             
             if (filtrados.length === 0) {
                 cont.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No hay productos en esta categoría</p></div>';
@@ -542,18 +491,13 @@
                     cant[idx] = 0;
                 }
                 
-                var imagenHtml = prod.imagen ? 
-                    '<img src="' + prod.imagen + '" alt="' + prod.nombre + '" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'🛍️\';">' : 
-                    '🛍️';
-                
                 var card = document.createElement('div');
                 card.className = 'product-card';
-                card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.nombre + '</div><div class="product-price">S/. ' + prod.precio + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
+                card.innerHTML = '<div class="product-image">' + prod.img + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
                 cont.appendChild(card);
             }
         }
         
-        // Actualizar cantidad
         function upd(i, ch) {
             cant[i] = Math.max(0, (cant[i] || 0) + ch);
             var inp = document.getElementById('q' + i);
@@ -561,16 +505,23 @@
             calc();
         }
         
-        // Calcular total
         function calc() {
             var tot = 0;
             for (var i = 0; i < productos.length; i++) {
-                tot += productos[i].precio * (cant[i] || 0);
+                tot += productos[i].p * (cant[i] || 0);
             }
             document.getElementById('totalAmount').textContent = tot.toFixed(0);
         }
         
-        // Enviar pedido
+        var filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                render(this.getAttribute('data-category'));
+            });
+        });
+        
         document.getElementById('orderForm').onsubmit = function(e) {
             e.preventDefault();
             
@@ -579,8 +530,8 @@
             
             for (var i = 0; i < productos.length; i++) {
                 if (cant[i] > 0) {
-                    prods.push(cant[i] + 'x ' + productos[i].nombre + ' (S/.' + (productos[i].precio * cant[i]).toFixed(2) + ')');
-                    tot += productos[i].precio * cant[i];
+                    prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
+                    tot += productos[i].p * cant[i];
                 }
             }
             
@@ -599,7 +550,7 @@
                 comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
             };
             
-            fetch(PEDIDOS_WEBHOOK_URL, {
+            fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -626,8 +577,7 @@
             });
         };
         
-        // Inicializar
-        cargarProductos();
+        render('todos');
     </script>
 </body>
 </html>
