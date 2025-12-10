@@ -959,8 +959,43 @@ function getCategoryFromURL() {
         }
         
         render(initialCategory);
+
+        // Verificar si hay un producto para agregar desde index.html
+(function() {
+    var addToCart = localStorage.getItem('addToCart');
+    if (addToCart) {
+        try {
+            var item = JSON.parse(addToCart);
+            // Buscar el producto por nombre
+            for (var i = 0; i < productos.length; i++) {
+                if (productos[i].n === item.nombre) {
+                    cant[i] = item.cantidad;
+                    var inp = document.getElementById('q' + i);
+                    if (inp) inp.value = cant[i];
+                    calc();
+                    // Hacer scroll al producto
+                    setTimeout(function() {
+                        var productCard = document.getElementById('q' + i);
+                        if (productCard && productCard.closest('.product-card')) {
+                            productCard.closest('.product-card').scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }, 500);
+                    break;
+                }
+            }
+            // Limpiar localStorage
+            localStorage.removeItem('addToCart');
+        } catch (e) {
+            console.error('Error al procesar producto:', e);
+        }
+    }
+})();
     </script>
 </body>
 </html>
+
 
 
