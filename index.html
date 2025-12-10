@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montibazar - Tu tienda de tecnología y hogar</title>
+    <title>Montibazar - Tu tienda de productos de calidad</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
             color: #333;
         }
         
+        /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 120px 20px 80px;
             text-align: center;
-            padding: 80px 20px;
         }
         
         .hero h1 {
@@ -27,7 +33,7 @@
         
         .hero p {
             font-size: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             opacity: 0.95;
         }
         
@@ -35,26 +41,28 @@
             display: inline-block;
             background: white;
             color: #667eea;
-            padding: 18px 40px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 50px;
+            padding: 15px 40px;
             text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 18px;
             transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 60px 20px;
         }
         
+        /* Section Titles */
         .section-title {
             text-align: center;
             font-size: 36px;
@@ -62,113 +70,87 @@
             color: #333;
         }
         
+        /* Categories Grid */
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-bottom: 60px;
         }
         
         .category-card {
-            background: #f8f9fa;
+            background: white;
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
         }
         
         .category-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
         
         .category-icon {
             font-size: 60px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
-        .category-card h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #667eea;
+        .category-name {
+            font-size: 22px;
+            font-weight: 600;
         }
         
-        .category-card p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .benefits {
-            background: #f8f9fa;
-            padding: 60px 20px;
-        }
-        
-        .benefits-grid {
+        /* Featured Products */
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .benefit-item {
-            text-align: center;
-        }
-        
-        .benefit-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-        
-        .benefit-item h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .benefit-item p {
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        .featured-products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
-            margin-bottom: 60px;
         }
         
         .product-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
         
         .product-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
         
         .product-image {
             width: 100%;
-            height: 200px;
-            background: #f0f0f0;
+            height: 250px;
+            background: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 80px;
         }
         
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+        }
+        
         .product-info {
             padding: 20px;
         }
         
-        .product-card h3 {
+        .product-name {
             font-size: 18px;
+            font-weight: 600;
             margin-bottom: 10px;
-            color: #333;
+            min-height: 45px;
         }
         
         .product-price {
@@ -177,159 +159,336 @@
             font-weight: 700;
         }
         
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
-        
-        .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-section p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-        
-        footer {
+        /* Footer */
+        .footer {
             background: #333;
             color: white;
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
+            margin-top: 60px;
         }
         
-        footer p {
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        /* Modal de Producto */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            position: relative;
+            padding: 0;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: #f44336;
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+        
+        .modal-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 30px;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
             margin-bottom: 10px;
         }
         
-        footer a {
+        .modal-price {
+            font-size: 36px;
+            font-weight: 700;
             color: #667eea;
-            text-decoration: none;
+            margin-bottom: 20px;
         }
         
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .hero p { font-size: 16px; }
-            .section-title { font-size: 28px; }
-            .cta-section h2 { font-size: 28px; }
+        .modal-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            white-space: pre-line;
+        }
+        
+        .modal-action {
+            text-align: center;
+        }
+        
+        .modal-action a {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .modal-action a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .category-icon {
+                font-size: 40px;
+            }
+            
+            .category-name {
+                font-size: 18px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            
+            .product-image {
+                height: 180px;
+                font-size: 60px;
+            }
+            
+            .modal-image {
+                height: 250px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-title {
+                font-size: 22px;
+            }
+            
+            .modal-price {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>🛍️ Bienvenido a Montibazar</h1>
-        <p>Tecnología y productos para el hogar al mejor precio</p>
-        <a href="pedidos.html" class="cta-button">🛒 Ver Catálogo y Hacer Pedido</a>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🛒 Bienvenido a Montibazar</h1>
+        <p>Descubre productos de calidad para tu hogar, entretenimiento y mucho más</p>
+        <a href="pedidos.html" class="cta-button">Ver Catálogo Completo</a>
+    </section>
 
+    <!-- Categories Section -->
     <div class="container">
-        <h2 class="section-title">Explora Nuestras Categorías</h2>
+        <h2 class="section-title">Explora nuestras categorías</h2>
         <div class="categories-grid">
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+            <a href="pedidos.html?categoria=hogar" class="category-card">
                 <div class="category-icon">🏡</div>
-                <h3>Hogar</h3>
-                <p>Electrodomésticos y accesorios para tu cocina</p>
-            </div>
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-name">Hogar</div>
+            </a>
+            <a href="pedidos.html?categoria=parlantes" class="category-card">
                 <div class="category-icon">🔊</div>
-                <h3>Parlantes</h3>
-                <p>Audio de alta calidad y portátil</p>
-            </div>
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-name">Parlantes</div>
+            </a>
+            <a href="pedidos.html?categoria=luminarias" class="category-card">
                 <div class="category-icon">💡</div>
-                <h3>Luminarias</h3>
-                <p>Iluminación LED y solar</p>
-            </div>
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-name">Luminarias</div>
+            </a>
+            <a href="pedidos.html?categoria=juegos" class="category-card">
                 <div class="category-icon">🎮</div>
-                <h3>Juegos</h3>
-                <p>Consolas y entretenimiento</p>
-            </div>
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-name">Juegos</div>
+            </a>
+            <a href="pedidos.html?categoria=smartwatch" class="category-card">
                 <div class="category-icon">⌚</div>
-                <h3>Smartwatch</h3>
-                <p>Relojes inteligentes</p>
-            </div>
-            <div class="category-card" onclick="window.location.href='pedidos.html'">
+                <div class="category-name">Smartwatch</div>
+            </a>
+            <a href="pedidos.html?categoria=novedades" class="category-card">
                 <div class="category-icon">🎇</div>
-                <h3>Novedades</h3>
-                <p>Lo último en tecnología</p>
-            </div>
+                <div class="category-name">Novedades</div>
+            </a>
         </div>
+    </div>
 
+    <!-- Featured Products Section -->
+    <div class="container">
         <h2 class="section-title">Productos Destacados</h2>
-        <div class="featured-products">
-            <div class="product-card">
-                <div class="product-image">🔌</div>
-                <div class="product-info">
-                    <h3>PLANCHA ELECTRICA</h3>
-                    <div class="product-price">S/. 110</div>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">🔊</div>
-                <div class="product-info">
-                    <h3>PARLANTE BT 2301</h3>
-                    <div class="product-price">S/. 57</div>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">⌚</div>
-                <div class="product-info">
-                    <h3>SMARTWATCH T900</h3>
-                    <div class="product-price">S/. 160</div>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">🎮</div>
-                <div class="product-info">
-                    <h3>CONSOLA 20000 JUEGOS</h3>
-                    <div class="product-price">S/. 124</div>
-                </div>
-            </div>
-        </div>
+        <div class="products-grid" id="featuredProducts"></div>
     </div>
 
-    <div class="benefits">
-        <div class="benefits-grid">
-            <div class="benefit-item">
-                <div class="benefit-icon">📦</div>
-                <h3>Envío Rápido</h3>
-                <p>Recibe tu pedido en 24-48 horas en Lima</p>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">💳</div>
-                <h3>Pago Fácil</h3>
-                <p>Yape, Plin o transferencia bancaria</p>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">✅</div>
-                <h3>Garantía</h3>
-                <p>Productos de calidad garantizada</p>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">💬</div>
-                <h3>Atención 24/7</h3>
-                <p>Estamos para ayudarte por WhatsApp</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="cta-section">
-        <h2>¿Listo para hacer tu pedido?</h2>
-        <p>Compra fácil, rápido y seguro. Sin complicaciones.</p>
-        <a href="pedidos.html" class="cta-button">🛒 Ir al Catálogo</a>
-    </div>
-
-    <footer>
-        <p><strong>Montibazar</strong> - Tu tienda de confianza</p>
-        <p>📱 WhatsApp: 999-888-777</p>
-        <p>📧 Email: ventas@montibazar.com</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>📱 WhatsApp:</strong> 999-888-777</p>
+        <p><strong>📧 Email:</strong> ventas@montibazar.com</p>
         <p>© 2025 Montibazar. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- Modal de Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div class="modal-image" id="modalImage"></div>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-price" id="modalPrice"></div>
+                <div class="modal-description" id="modalDescription"></div>
+                <div class="modal-action">
+                    <a href="pedidos.html">Ver en Catálogo y Comprar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Productos destacados
+        var productosDestacados = [
+            {n:"BATIDORA DE MANO ELECTRICA DE 600W",p:96,img:"images/batidora2.png",desc:"- Regulador de 5 velocidades\n- 600 Watts Potente motor para trabajo continuo\n- Motor de alto desempeño y suave funcionamiento\n- Doble accesorio (batir y amasar)\n- 220 - 240 V 50 60 HZ 600 W\n- Medidas 66 5 x 41 x 40 CM"},
+            {n:"SMARTWATCH MILITAR G1",p:249,img:"⌚",desc:"- IP67 ACUATICO\n- TEMPERATURAS EXTREMAS\n- GRADO MILITAR\n- SUMERGIBLE HASTA 30 MT\n- BATERÍA DE 30 DÍAS\n- DEPORTES EXTREMOS\n- LLAMADAS Y REDES SOCIALES"},
+            {n:"CONSOLA DE JUEGOS 3D GAMES 5G",p:247,img:"🎮",desc:"- GRAFICOS DE ALTA DEFINICIÓN\n- DOS MANDOS RECARGABLES\n- ACCESORIOS COMPLETOS\n- MAS DE 37000 JUEGOS\n- DISEÑO MODERNO Y COMPACTO"},
+            {n:"PARLANTE ZEALOT S56 COLOR NEGRO 10W",p:156,img:"🔊",desc:"- Batería 3000 mAh\n- Bluetooth versión 5.2\n- Distancia de Transmisión 10m\n- Voltaje 3.7V\n- tiempo de carga 3h\n- Peso 700g"},
+            {n:"PLANCHA ELECTRICA DE ROPA",p:110,img:"🔌",desc:"• POTENCIA 2200 W\n• MEDIDAS 56 28 5 63 CM\n• VENTANA DE AGUA TRANSPARENTE\n• PLACA CERAMINCA ANTIDHERENTE\n• TEMPERATURA AJUSTABLE"},
+            {n:"FOCO LED A COLORES MUSICAL",p:72,img:"🎵",desc:"- TAMAÑO 230*90MM\n- POTENCIA 48W\n- BLUETOOTH\n- COOLOR BLANCO\n- LUZ BLANCA + LUZ DE COLOR"}
+        ];
+        
+        function renderFeaturedProducts() {
+            var container = document.getElementById('featuredProducts');
+            container.innerHTML = '';
+            
+            for (var i = 0; i < productosDestacados.length; i++) {
+                var prod = productosDestacados[i];
+                
+                var imagenHtml = prod.img.indexOf('images/') >= 0 ? 
+                    '<img src="' + prod.img + '" alt="' + prod.n + '">' : 
+                    prod.img;
+                
+                var card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = function(index) { 
+                    return function() { openModal(index); }; 
+                }(i);
+                card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div></div>';
+                container.appendChild(card);
+            }
+        }
+        
+        function openModal(idx) {
+            var prod = productosDestacados[idx];
+            
+            document.getElementById('modalTitle').textContent = prod.n;
+            document.getElementById('modalPrice').textContent = 'S/. ' + prod.p;
+            document.getElementById('modalDescription').textContent = prod.desc || 'Sin descripción disponible';
+            
+            var imagenHtml = prod.img.indexOf('images/') >= 0 ? 
+                '<img src="' + prod.img + '" alt="' + prod.n + '">' : 
+                '<div style="font-size:120px">' + prod.img + '</div>';
+            document.getElementById('modalImage').innerHTML = imagenHtml;
+            
+            document.getElementById('productModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target.id === 'productModal') {
+                closeModal();
+            }
+        };
+        
+        renderFeaturedProducts();
+    </script>
 </body>
 </html>
