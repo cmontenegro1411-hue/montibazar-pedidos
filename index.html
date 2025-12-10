@@ -161,15 +161,46 @@
         
         /* Footer */
         .footer {
-            background: #333;
+            background: #2c3e50;
             color: white;
-            text-align: center;
-            padding: 40px 20px;
+            padding: 50px 20px 30px;
             margin-top: 60px;
         }
         
-        .footer p {
-            margin: 5px 0;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-section a:hover {
+            color: #667eea;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
         }
         
         /* Modal de Producto */
@@ -341,6 +372,11 @@
                 font-size: 60px;
             }
             
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
             .modal-image {
                 height: 250px;
             }
@@ -406,9 +442,29 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p><strong>📱 WhatsApp:</strong> 999-888-777</p>
-        <p><strong>📧 Email:</strong> ventas@montibazar.com</p>
-        <p>© 2025 Montibazar. Todos los derechos reservados.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>📞 Contacto</h3>
+                <p>📱 WhatsApp: <a href="https://wa.me/51999888777" target="_blank">+51 999 888 777</a></p>
+                <p>📧 Email: <a href="mailto:ventas@montibazar.com">ventas@montibazar.com</a></p>
+                <p>📍 Lima, Perú</p>
+            </div>
+            <div class="footer-section">
+                <h3>🚚 Envíos</h3>
+                <p>✅ Envíos a todo Lima</p>
+                <p>✅ Envíos a provincias</p>
+                <p>✅ Recojo en tienda disponible</p>
+            </div>
+            <div class="footer-section">
+                <h3>💳 Métodos de Pago</h3>
+                <p>✅ Yape / Plin</p>
+                <p>✅ Transferencia bancaria</p>
+                <p>✅ Efectivo contra entrega</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Montibazar. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
     <!-- Modal de Producto -->
