@@ -13,7 +13,6 @@
             padding: 0;
         }
         
-        /* Header */
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -46,14 +45,12 @@
             opacity: 1;
         }
         
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
         
-        /* Form Section */
         .form-section {
             background: white;
             border-radius: 15px;
@@ -102,7 +99,6 @@
             border-color: #667eea;
         }
         
-        /* Filter Section */
         .filter-section {
             display: flex;
             gap: 10px;
@@ -133,7 +129,6 @@
             color: white;
         }
         
-        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -233,7 +228,6 @@
             font-weight: 600;
         }
         
-        /* Total Section */
         .total-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -255,7 +249,6 @@
             font-weight: 700;
         }
         
-        /* Submit Button */
         .submit-btn {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -279,7 +272,6 @@
             transform: translateY(0);
         }
         
-        /* Messages */
         .message {
             display: none;
             padding: 20px;
@@ -299,7 +291,22 @@
             color: white;
         }
         
-        /* Empty State */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #667eea;
+        }
+        
+        .loading-spinner {
+            font-size: 60px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -311,7 +318,6 @@
             margin-bottom: 20px;
         }
         
-        /* Responsive */
         @media screen and (max-width: 768px) {
             .header h1 {
                 font-size: 24px;
@@ -386,7 +392,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <a href="index.html" class="back-link">← Volver al inicio</a>
         <h1>🛒 Catálogo Montibazar</h1>
@@ -394,7 +399,6 @@
     </div>
 
     <div class="container">
-        <!-- Customer Form -->
         <form id="orderForm">
             <div class="form-section">
                 <h2>📋 Tus Datos</h2>
@@ -416,32 +420,24 @@
                 </div>
             </div>
             
-            <!-- Products Section -->
             <div class="form-section">
                 <h2>📦 Selecciona tus Productos</h2>
                 
-                <!-- Category Filters -->
-                <div class="filter-section">
-                    <button type="button" class="filter-btn active" data-category="todos">Todos</button>
-                    <button type="button" class="filter-btn" data-category="hogar">🏡 Hogar</button>
-                    <button type="button" class="filter-btn" data-category="parlantes">🔊 Parlantes</button>
-                    <button type="button" class="filter-btn" data-category="luminarias">💡 Luminarias</button>
-                    <button type="button" class="filter-btn" data-category="juegos">🎮 Juegos</button>
-                    <button type="button" class="filter-btn" data-category="smartwatch">⌚ Smartwatch</button>
-                    <button type="button" class="filter-btn" data-category="novedades">🎇 Novedades</button>
-                </div>
+                <div class="filter-section" id="filterSection"></div>
                 
-                <!-- Products Grid -->
-                <div id="productsList" class="products-grid"></div>
+                <div id="productsList" class="products-grid">
+                    <div class="loading">
+                        <div class="loading-spinner">⏳</div>
+                        <p>Cargando productos...</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Total Section -->
             <div class="total-section">
                 <div class="total-label">Total a pagar:</div>
                 <div class="total-amount">S/. <span id="totalAmount">0</span></div>
             </div>
             
-            <!-- Comments -->
             <div class="form-section">
                 <h2>💬 Comentarios Adicionales</h2>
                 <textarea id="comentarios" rows="3" placeholder="¿Alguna indicación especial para tu pedido?"></textarea>
@@ -455,83 +451,72 @@
     </div>
 
     <script>
-        const WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
+        // CONFIGURACIÓN - Reemplaza estas URLs
+        const PRODUCTOS_API_URL = 'https://hook.us2.make.com/1hlaic9hd9obar76t5zls0opugph4rso';
+        const PEDIDOS_WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
         
-        // Productos con emojis como placeholder (puedes cambiarlos por URLs de imágenes reales)
-        var productos = [
-            // HOGAR
-            {n: "SET CUCHILLOS 9 PIEZAS", p: 99, c: "hogar", img: "🔪"},
-            {n: "PLANCHA ELECTRICA", p: 110, c: "hogar", img: "🔌"},
-            {n: "SANDWICHERA 800W", p: 98, c: "hogar", img: "🥪"},
-            {n: "BATIDORA 600W", p: 96, c: "hogar", img: "🥄"},
-            {n: "CAFETERA 625mL", p: 126, c: "hogar", img: "☕"},
-            {n: "LICUADORA 2 EN 1", p: 126, c: "hogar", img: "🥤"},
-            {n: "HERVIDOR 2.5L", p: 72, c: "hogar", img: "🫖"},
-            {n: "TOSTADORA 650W", p: 110, c: "hogar", img: "🍞"},
-            {n: "MINI BATIDORA 260W", p: 67, c: "hogar", img: "🥄"},
-            {n: "PLANCHA A VAPOR", p: 80, c: "hogar", img: "👔"},
-            {n: "PLANCHA CABELLO", p: 72, c: "hogar", img: "💇"},
-            {n: "SECADORA CABELLO", p: 72, c: "hogar", img: "💨"},
-            {n: "SET UTENSILIOS", p: 100, c: "hogar", img: "🍴"},
-            {n: "JUEGO CUCHILLOS 6 PZS", p: 65.5, c: "hogar", img: "🔪"},
-            {n: "ORGANIZADOR BAÑO", p: 80, c: "hogar", img: "🛁"},
-            {n: "ESTANTE COCINA 3 NIV", p: 58, c: "hogar", img: "📚"},
-            {n: "CARRITO 3 NIVELES", p: 95, c: "hogar", img: "🛒"},
-            {n: "TERMO 2 TAZAS", p: 57.5, c: "hogar", img: "🍵"},
-            {n: "TERMO ACERO INOX", p: 50, c: "hogar", img: "🥤"},
-            
-            // PARLANTES
-            {n: "PARLANTE BT 2301", p: 57, c: "parlantes", img: "🔊"},
-            {n: "PARLANTE RELOJ 6en1", p: 72, c: "parlantes", img: "⏰"},
-            {n: "MINI PARLANTE G200", p: 63, c: "parlantes", img: "🔉"},
-            {n: "MINI PARLANTE WIND 3S", p: 63, c: "parlantes", img: "🔉"},
-            {n: "PARLANTE CILINDRICO LED", p: 48, c: "parlantes", img: "💡"},
-            {n: "PARLANTE LINTERNA SOLAR", p: 57, c: "parlantes", img: "🔦"},
-            {n: "MINI PARLANTE LED", p: 57, c: "parlantes", img: "🔊"},
-            {n: "PARLANTE GRECTINE", p: 49.5, c: "parlantes", img: "🔊"},
-            {n: "PARLANTE 4 PULGADAS RGB", p: 63, c: "parlantes", img: "🌈"},
-            {n: "HIELERA PARLANTE RGB", p: 57, c: "parlantes", img: "🧊"},
-            {n: "PARLANTE FLIP 7 LED", p: 60, c: "parlantes", img: "🔊"},
-            {n: "PARLANTE 8 PULGADAS RGB", p: 75, c: "parlantes", img: "🔊"},
-            
-            // LUMINARIAS
-            {n: "FOCO SOLAR 30W", p: 57, c: "luminarias", img: "💡"},
-            {n: "FOCO LED MUSICAL", p: 72, c: "luminarias", img: "🎵"},
-            {n: "LAMPARA MATA MOSQUITOS", p: 65, c: "luminarias", img: "🦟"},
-            {n: "LUCES GUIRNALDAS SOLAR", p: 118, c: "luminarias", img: "✨"},
-            {n: "LUZ SOLAR SENSOR", p: 41, c: "luminarias", img: "🌙"},
-            
-            // JUEGOS
-            {n: "CONSOLA MANDOS RECARGABLES", p: 220, c: "juegos", img: "🎮"},
-            {n: "CONSOLA 20000 JUEGOS", p: 124, c: "juegos", img: "🕹️"},
-            {n: "CONSOLA 3D X2", p: 202, c: "juegos", img: "🎮"},
-            {n: "CONSOLA 3D GAMES 5G", p: 247, c: "juegos", img: "🎮"},
-            
-            // SMARTWATCH
-            {n: "SMARTWATCH MILITAR PRO3", p: 150, c: "smartwatch", img: "⌚"},
-            {n: "SMARTWATCH MILITAR G1", p: 145, c: "smartwatch", img: "⌚"},
-            {n: "SMARTWATCH T900 PRO MAX", p: 160, c: "smartwatch", img: "⌚"},
-            {n: "SMARTWATCH T1000 ULTRA", p: 170, c: "smartwatch", img: "⌚"},
-            {n: "SMARTWATCH REDONDO", p: 140, c: "smartwatch", img: "⌚"},
-            {n: "SMARTWATCH 2EN1 AUDIFONO", p: 180, c: "smartwatch", img: "🎧"},
-            
-            // NOVEDADES
-            {n: "CORTADORA CABELLO INALAMBRICA", p: 110, c: "novedades", img: "💇"},
-            {n: "CORTADORA PELO RECARGABLE", p: 93, c: "novedades", img: "✂️"},
-            {n: "CORTADORA DEXBO", p: 109, c: "novedades", img: "✂️"},
-            {n: "HIDROLAVADORA 48V", p: 124, c: "novedades", img: "💦"},
-            {n: "INTERCOMUNICADOR CASCO", p: 140, c: "novedades", img: "🎤"},
-            {n: "AUDIFONO CASCO Q28", p: 278, c: "novedades", img: "🎧"},
-            {n: "MORRAL ANTIROBO", p: 49, c: "novedades", img: "🎒"},
-            {n: "LENTES SOL BLUETOOTH", p: 48, c: "novedades", img: "🕶️"},
-            {n: "CARGADOR INALAMBRICO 3EN1", p: 72, c: "novedades", img: "🔋"},
-            {n: "PISTOLA BURBUJA 32", p: 34, c: "novedades", img: "🫧"}
-        ];
-        
+        var productos = [];
         var cant = {};
         var currentFilter = 'todos';
         
-        // Render products
+        // Cargar productos desde Notion vía Make
+        async function cargarProductos() {
+            try {
+                const response = await fetch(PRODUCTOS_API_URL);
+                const data = await response.json();
+                productos = data;
+                
+                generarFiltros();
+                render('todos');
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                document.getElementById('productsList').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Error al cargar productos. Por favor, recarga la página.</p></div>';
+            }
+        }
+        
+        // Generar botones de filtro dinámicamente
+        function generarFiltros() {
+            var categorias = ['todos'];
+            productos.forEach(function(p) {
+                if (p.categoria && categorias.indexOf(p.categoria.toLowerCase()) === -1) {
+                    categorias.push(p.categoria.toLowerCase());
+                }
+            });
+            
+            var filterSection = document.getElementById('filterSection');
+            filterSection.innerHTML = '';
+            
+            var emojis = {
+                'todos': '🛍️',
+                'hogar': '🏡',
+                'parlantes': '🔊',
+                'luminarias': '💡',
+                'juegos': '🎮',
+                'smartwatch': '⌚',
+                'novedades': '🎇',
+                'camaras': '📷',
+                'audifonos': '🎧',
+                'herramientas': '🛠️'
+            };
+            
+            categorias.forEach(function(cat) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
+                btn.setAttribute('data-category', cat);
+                btn.textContent = (emojis[cat] || '') + ' ' + cat.charAt(0).toUpperCase() + cat.slice(1);
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    render(cat);
+                });
+                filterSection.appendChild(btn);
+            });
+        }
+        
+        // Renderizar productos
         function render(filtro) {
             filtro = filtro || 'todos';
             currentFilter = filtro;
@@ -540,7 +525,9 @@
             if (!cont) return;
             
             cont.innerHTML = '';
-            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) { return p.c === filtro; });
+            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) {
+                return p.categoria && p.categoria.toLowerCase() === filtro;
+            });
             
             if (filtrados.length === 0) {
                 cont.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No hay productos en esta categoría</p></div>';
@@ -555,14 +542,18 @@
                     cant[idx] = 0;
                 }
                 
+                var imagenHtml = prod.imagen ? 
+                    '<img src="' + prod.imagen + '" alt="' + prod.nombre + '" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'🛍️\';">' : 
+                    '🛍️';
+                
                 var card = document.createElement('div');
                 card.className = 'product-card';
-                card.innerHTML = '<div class="product-image">' + prod.img + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
+                card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.nombre + '</div><div class="product-price">S/. ' + prod.precio + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
                 cont.appendChild(card);
             }
         }
         
-        // Update quantity
+        // Actualizar cantidad
         function upd(i, ch) {
             cant[i] = Math.max(0, (cant[i] || 0) + ch);
             var inp = document.getElementById('q' + i);
@@ -570,26 +561,16 @@
             calc();
         }
         
-        // Calculate total
+        // Calcular total
         function calc() {
             var tot = 0;
             for (var i = 0; i < productos.length; i++) {
-                tot += productos[i].p * (cant[i] || 0);
+                tot += productos[i].precio * (cant[i] || 0);
             }
             document.getElementById('totalAmount').textContent = tot.toFixed(0);
         }
         
-        // Filter buttons
-        var filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                render(this.getAttribute('data-category'));
-            });
-        });
-        
-        // Form submit
+        // Enviar pedido
         document.getElementById('orderForm').onsubmit = function(e) {
             e.preventDefault();
             
@@ -598,8 +579,8 @@
             
             for (var i = 0; i < productos.length; i++) {
                 if (cant[i] > 0) {
-                    prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
-                    tot += productos[i].p * cant[i];
+                    prods.push(cant[i] + 'x ' + productos[i].nombre + ' (S/.' + (productos[i].precio * cant[i]).toFixed(2) + ')');
+                    tot += productos[i].precio * cant[i];
                 }
             }
             
@@ -618,7 +599,7 @@
                 comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
             };
             
-            fetch(WEBHOOK_URL, {
+            fetch(PEDIDOS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -645,8 +626,8 @@
             });
         };
         
-        // Initialize
-        render('todos');
+        // Inicializar
+        cargarProductos();
     </script>
 </body>
 </html>
