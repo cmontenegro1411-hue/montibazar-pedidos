@@ -547,7 +547,7 @@
         ];
         
         var currentModalProduct = null;
-        var modalQty = 1;
+        var modalQty = 0;
         
         function renderFeaturedProducts() {
             var container = document.getElementById('featuredProducts');
@@ -572,7 +572,7 @@
         
         function openModal(idx) {
             currentModalProduct = idx;
-            modalQty = 1;
+            modalQty = 0;
             var prod = productosDestacados[idx];
             
             document.getElementById('modalTitle').textContent = prod.n;
@@ -592,7 +592,7 @@
         function closeModal() {
             document.getElementById('productModal').style.display = 'none';
             document.body.style.overflow = 'auto';
-            modalQty = 1;
+            modalQty = 0;
         }
         
         function addToCartFromModal() {
@@ -633,3 +633,4 @@
     </script>
 </body>
 </html>
+
