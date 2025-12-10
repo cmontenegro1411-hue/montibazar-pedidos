@@ -500,11 +500,17 @@
                     cant[idx] = 0;
                 }
                 
-                var card = document.createElement('div');
+               var card = document.createElement('div');
                 card.className = 'product-card';
-                card.innerHTML = '<div class="product-image">' + prod.img + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
+
+                var imagenHtml = prod.img.indexOf('images/') >= 0 ? 
+                '<img src="' + prod.img + '" alt="' + prod.n + '">' : 
+                prod.img;
+
+                card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="upd(' + idx + ',1)">+</button></div></div>';
+
                 cont.appendChild(card);
-            }
+                }
         }
         
         function upd(i, ch) {
@@ -590,6 +596,7 @@
     </script>
 </body>
 </html>
+
 
 
 
