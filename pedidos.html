@@ -867,7 +867,7 @@
             for (var i = 0; i < productos.length; i++) {
                 tot += productos[i].p * (cant[i] || 0);
             }
-            document.getElementById('totalAmount').textContent = tot.toFixed(0);
+            document.getElementById('totalAmount').textContent = tot.toFixed(2);
         }
         
         var filterBtns = document.querySelectorAll('.filter-btn');
@@ -996,6 +996,7 @@ function getCategoryFromURL() {
     </script>
 </body>
 </html>
+
 
 
 
