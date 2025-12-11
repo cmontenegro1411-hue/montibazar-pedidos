@@ -540,8 +540,23 @@ transform: translateY(0);
 }
 
 @media screen and (max-width: 480px) {
-.products-grid { grid-template-columns: 1fr 1fr; }
-.product-image { height: 180px; }
+.products-grid {
+grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+gap: 12px;
+}
+
+.product-image {
+height: 160px;
+}
+
+.product-name {
+font-size: 13px;
+min-height: 32px;
+}
+
+.product-price {
+font-size: 18px;
+}
 }
 </style>
 </head>
@@ -906,4 +921,5 @@ console.error('Error al procesar producto:', e);
 </script>
 </body>
 </html>
+
 
