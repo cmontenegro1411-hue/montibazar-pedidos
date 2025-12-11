@@ -1,1012 +1,908 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montibazar - Catálogo de Productos</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            padding: 0;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .back-link {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .back-link:hover {
-            opacity: 1;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        .form-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .form-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .filter-section {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        
-       .filter-btn {
-            padding: 12px 24px;
-            border: 2px solid #2f8d07;
-            background: white;
-            color: #2f8d07;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .filter-btn:hover {
-            background: #f0f0ff;
-        }
-        
-        .filter-btn.active {
-        background: #2f8d07;
-        color: white;
-                        }
-        }
-        
-        /* Products Grid */
-        .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 30px;
-        padding: 20px 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montibazar - Catálogo de Productos</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .product-card {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-        }
-
-        .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(47, 141, 7, 0.3);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 220px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 20px;
-            background: white;
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 10px;
-            min-height: 40px;
-        }
-        
-        .product-price {
-            color: #2f8d07;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .qty-btn {
-            background: #2f8d07;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-        
-            .qty-btn:hover {
-            background: #267005;
-            }
-        
-        .qty-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .qty-input {
-            width: 60px;
-            text-align: center;
-            padding: 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .total-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-        
-        .total-label {
-            font-size: 18px;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-        
-        .total-amount {
-            font-size: 32px;
-            font-weight: 700;
-            color: #2f8d07;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(47, 141, 7, 0.4);
-        }
-        
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        
-        .empty-state-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        
-        /* Modal de Productos */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 0;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s;
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .modal-header {
-            position: relative;
-            padding: 0;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            font-size: 32px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-            color: #666;
-            transition: all 0.3s;
-        }
-        
-        .modal-close:hover {
-            background: #f44336;
-            color: white;
-            transform: rotate(90deg);
-        }
-        
-        .modal-image {
-            width: 100%;
-            height: 400px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px 20px 0 0;
-            overflow: hidden;
-        }
-        
-        .modal-image img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            padding: 30px;
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .modal-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .modal-price {
-            font-size: 36px;
-            font-weight: 700;
-            color: #2f8d07;
-            margin-bottom: 20px;
-        }
-        
-        .modal-description {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            white-space: pre-line;
-        }
-        
-        .modal-quantity {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .modal-quantity label {
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        .modal-qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .modal-add-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(47, 141, 7, 0.4);
-        }
-        
-        .modal-add-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(47, 141, 7, 0.6);
-        }
-        
-        /* Modal de Confirmación */
-        .confirmation-modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            animation: fadeIn 0.3s;
-        }
-        
-        .confirmation-content {
-            background: white;
-            margin: 15% auto;
-            padding: 0;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.3s;
-            text-align: center;
-        }
-        
-        .confirmation-icon {
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            padding: 40px;
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .confirmation-icon-inner {
-            font-size: 80px;
-            animation: bounce 0.6s;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
-        }
-        
-        .confirmation-body {
-            padding: 40px 30px 30px 30px;
-        }
-        
-        .confirmation-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .confirmation-message {
-            font-size: 16px;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        
-        .confirmation-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .confirmation-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        
-        .confirmation-btn:active {
-            transform: translateY(0);
-        }
-        
-        @media screen and (max-width: 768px) {
-            .header h1 { font-size: 24px; }
-            .back-link { position: relative; display: block; margin-bottom: 10px; top: 0; left: 0; }
-            .container { padding: 20px 10px; }
-            .form-section { padding: 20px; }
-            .form-section h2 { font-size: 20px; }
-            .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-            .product-image { height: 160px; font-size: 60px; }
-            .product-info { padding: 15px; }
-            .product-name { font-size: 14px; min-height: 35px; }
-            .product-price { font-size: 20px; }
-            .total-amount { font-size: 36px; }
-            .filter-section { gap: 8px; }
-            .filter-btn { padding: 10px 18px; font-size: 13px; }
-            
-            .modal-content {
-                width: 95%;
-                margin: 10% auto;
-            }
-            
-            .modal-image {
-                height: 250px;
-            }
-            
-            .modal-body {
-                padding: 20px;
-            }
-            
-            .modal-title {
-                font-size: 22px;
-            }
-            
-            .modal-price {
-                font-size: 28px;
-            }
-            
-            .confirmation-content {
-                width: 85%;
-            }
-            
-            .confirmation-icon {
-                padding: 30px;
-            }
-            
-            .confirmation-icon-inner {
-                font-size: 60px;
-            }
-            
-            .confirmation-title {
-                font-size: 24px;
-            }
-            
-            .confirmation-message {
-                font-size: 14px;
-            }
-        }
-        
-        @media screen and (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .product-image {
-                height: 200px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <a href="index.html" class="back-link">← Volver al inicio</a>
-        <h1>🛒 Catálogo Montibazar</h1>
-        <p>Selecciona tus productos y completa tu pedido</p>
-    </div>
-
-    <div class="container">
-        <form id="orderForm">
-            <div class="form-section">
-                <h2>📋 Tus Datos</h2>
-                <div class="form-group">
-                    <label>Nombre Completo *</label>
-                    <input type="text" id="nombre" required placeholder="Ej: Juan Pérez">
-                </div>
-                <div class="form-group">
-                    <label>Correo Electrónico *</label>
-                    <input type="email" id="correo" required placeholder="ejemplo@correo.com">
-                </div>
-                <div class="form-group">
-                    <label>Teléfono / WhatsApp *</label>
-                    <input type="tel" id="telefono" required placeholder="999 888 777">
-                </div>
-                <div class="form-group">
-                    <label>Dirección de Entrega *</label>
-                    <input type="text" id="direccion" required placeholder="Av. Ejemplo 123, Lima">
-                </div>
-            </div>
-            
-            <div class="form-section">
-                <h2>📦 Selecciona tus Productos</h2>
-                
-                <div class="filter-section">
-                    <button type="button" class="filter-btn active" data-category="todos">🛍️ Todos</button>
-                    <button type="button" class="filter-btn" data-category="hogar">🏡 Hogar</button>
-                    <button type="button" class="filter-btn" data-category="parlantes">🔊 Parlantes</button>
-                    <button type="button" class="filter-btn" data-category="luminarias">💡 Luminarias</button>
-                    <button type="button" class="filter-btn" data-category="juegos">🎮 Juegos</button>
-                    <button type="button" class="filter-btn" data-category="smartwatch">⌚ Smartwatch</button>
-                    <button type="button" class="filter-btn" data-category="novedades">🎇 Novedades</button>
-                </div>
-                
-                <div id="productsList" class="products-grid"></div>
-            </div>
-            
-            <div class="total-section">
-                <div class="total-label">Total a pagar:</div>
-                <div class="total-amount">S/. <span id="totalAmount">0</span></div>
-            </div>
-            
-            <div class="form-section">
-                <h2>💬 Comentarios Adicionales</h2>
-                <textarea id="comentarios" rows="3" placeholder="¿Alguna indicación especial para tu pedido?"></textarea>
-            </div>
-            
-            <button type="submit" class="submit-btn">🛒 Enviar Pedido</button>
-        </form>
-    </div>
-
-    <!-- Modal de Productos -->
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-                <div class="modal-image" id="modalImage"></div>
-            </div>
-            <div class="modal-body">
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <div class="modal-price" id="modalPrice"></div>
-                <div class="modal-description" id="modalDescription"></div>
-                <div class="modal-quantity">
-                    <label>Cantidad:</label>
-                    <div class="modal-qty-controls">
-                        <button type="button" class="qty-btn" id="modalBtnMinus">−</button>
-                        <input type="number" class="qty-input" id="modalQty" value="0" readonly>
-                        <button type="button" class="qty-btn" id="modalBtnPlus">+</button>
-                    </div>
-                </div>
-                <button type="button" class="modal-add-btn" onclick="addToCartFromModal()">Agregar al carrito</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmación -->
-    <div id="confirmationModal" class="confirmation-modal">
-        <div class="confirmation-content">
-            <div class="confirmation-icon">
-                <div class="confirmation-icon-inner">✅</div>
-            </div>
-            <div class="confirmation-body">
-                <h2 class="confirmation-title">¡Pedido Enviado!</h2>
-                <p class="confirmation-message">Tu pedido ha sido enviado exitosamente. Nos pondremos en contacto contigo pronto para coordinar la entrega.</p>
-                <button class="confirmation-btn" onclick="closeConfirmationModal()">Aceptar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const WEBHOOK_URL = 'https://hook.us2.make.com/7qyang1uvx43d3n5c78hdxo39ew1b7n8';
-        
-        var productos = [
-            // HOGAR (21 productos)
-            {n:"BATIDORA DE MANO ELECTRICA DE 600W",p:96,c:"hogar",img:"images/batidora2.png",desc:"- Regulador de 5 velocidades\n- 600 Watts Potente motor para trabajo continuo\n- Motor de alto desempeño y suave funcionamiento\n- Doble accesorio (batir y amasar)\n- 220 - 240 V 50 60 HZ 600 W\n- Medidas 66 5 x 41 x 40 CM"},
-            {n:"CAFETERA ELECTRICA 625mL",p:126,c:"hogar",img:"images/cafetera.png",desc:"- APAGADO AUTOMATICO\n- FILTRO PERMANENTE CON ASA\n- INDICADOR DE NIVEL DE AGUA\n- POTENCIA 650W/ 220 240V, 50 60Hz\n- MEDIDAS 49.54755.5cm"},
-            {n:"CARRITO ORGANIZADOR 3 NIVELES CON RUEDAS",p:95,c:"hogar",img:"images/organizador2.png",desc:"- MEDIDAS 423585CM\n- RUEDAS UNIVERSALES DE 360º\n- MATERIAL METAL Y PLASTICO ABS\n- ORGANIZADOR MULTIFUNCIONAL"},
-            {n:"ESTANTE ORGANIZADOR DE COCINA 3 NIVELES",p:58,c:"hogar",img:"images/organizador.png",desc:"- MEDIDA 732750.5CM\n- COLOR NEGRO\n- MATERIAL DE ALTA CALIDAD\n- PRESENTACION EN CAJA DESARMADO"},
-            {n:"HERVIDOR ELECTRICO 2.5L BOTON AUTOMATICO",p:72,c:"hogar",img:"images/hervidor2.png",desc:"- Hervidor de acero inoxidable\n- Facilidad de rotación 360\n- Capacidad Máxima 2 0 L\n- Tapa con cierre de seguridad\n- Botón de encendido/apagado automático\n- 220-240 V 50 60 HZ 1500 W\n- Medida 84 5 x 40 5 x 49"},
-            {n:"HERVIDOR ELECTRICO PLASTICO 2.3L",p:72,c:"hogar",img:"images/hervidor.png",desc:"- Hervidor de plástico\n- Facilidad de rotación 360\n- Capacidad Máxima 2 3 L\n- Filtro removible y lavable\n- Tapa con cierre de seguridad\n- Botón de encendido/apagado automático\n- 220-240 V 50 60 HZ 1500 W\n- Medida 69 5 x 43 x 47 5 CM"},
-            {n:"JUEGO DE CUCHILLOS DE 6 PIEZAS",p:65.5,c:"hogar",img:"images/cuchillos4.png",desc:"-HOJAS DE ACERO INOXIDABLE\n-MANGO DE PLASTICO\n-APTO PARA LAVAVAJILLAS"},
-            {n:"LICUADORA STARLUX 2 EN 1 1.5LITROS",p:126,c:"hogar",img:"images/licuadora.png",desc:"- HOJA DE ACERO INOXIDABLE\n- 3 VELOCIDADES / POTENCIA 800W\n- VASO DE CRISTAL PEQUEÑO PARA JUGOS INSTANTANEOS\nY MODELOR DE ESPECIAS"},
-            {n:"MAQUINA TOSTADORA 650W",p:110,c:"hogar",img:"images/tostadora1.png",desc:"-5 VELOCIDADES\n-APAGADO AUTOMATICO\n-220 240V , 50 60Hz, 650W\n-AJUSTE SUAVE DEL NIVEL DE TOSTADO\n-EXPULSION AUTOMATICA DE TOSTADAS"},
-            {n:"MINI BATIDORA ELECTRICA DE 260W",p:67,c:"hogar",img:"images/batidora.png",desc:"La potencia del motor de una batidora es una de las características más importantes de estos aparatos. Las que se\nconsideran profesionales y de buena calidad tienen motores con\npotencia de hasta 260W, mientras que las industriales superan los\n1000 W."},
-            {n:"ORGANIZADOR ESTANTE DE BAÑO",p:80,c:"hogar",img:"images/organizador3.png",desc:"- 3 NIVELES\n- MATERIAL METAL\n- COLOR BLANCO\n- RESISTENTE AL AGUA Y ANTIOXIDANTE\n- IDEAL PARA MAXIMIZAR EL ESPACIO DE TU BAÑO"},
-            {n:"PLANCHA A VAPOR ELECTRICO",p:80,c:"hogar",img:"images/plancha.png",desc:"• POTENCIA 1200 W\n• 220 240 V, 50 60 Hz\n• MEDIDAS 59 28 5 56 CM\n• TEMPERATURA AJUSTABLE\n• CERAMICO ANTIADHERENTE"},
-            {n:"PLANCHA ALIZADORA DE CABELLO",p:72,c:"hogar",img:"images/lizadora.png",desc:"Las planchas de pelo, también conocidas como alisadoras, son\ndispositivos eléctricos que sirven para alisar, rizar y modelar el\ncabello. Para ello, pueden emplear calor infrarrojo, vapor de agua,\niones negativos y/o resistencias eléctricas mediante placas de\ntitanio, de cerámica o de otros muchos materiales BM"},
-            {n:"PLANCHA ELECTRICA DE ROPA",p:110,c:"hogar",img:"images/plancha2.png",desc:"• POTENCIA 2200 W\n• MEDIDAS 56 28 5 63 CM\n• VENTANA DE AGUA TRANSPARENTE\n• PLACA CERAMINCA ANTIDHERENTE\n• TEMPERATURA AJUSTABLE"},
-            {n:"SANDWICHERA 800W BM 002A",p:98,c:"hogar",img:"images/sanguchera.png",desc:"Saludable y duradero. La placa calefactora está hecha de material\nresistente a altas temperaturas, con alta densidad y buena resistencia a la adhesión. Antiadherente: el revestimiento antiadherente de grado alimenticio lo hace seguro y fácil de moldear y limpiar y calentar."},
-            {n:"SANDWICHERA 800W BM 002D",p:98,c:"hogar",img:"images/sanguchera2.png",desc:"• PLACA CON REVESTIMIENTO ANTIADHERENTE\n• MEDIDAS 50CM3050CM\n• 220 240V , 50 60Hz\n• SOPORTE VERTICAL PARA UN ALMACENAMIENTO COMPACTO\nY AHORRO DE ESPACIO"},
-            {n:"SECADORA DE CABELLO DORADA",p:72,c:"hogar",img:"images/secadora.png",desc:"- 3 modos de temperatura\n- 2 modos de velocidad\n- Difusor y boquilla de peinado profesional\n- Filtro de entrada de aire\n- Fuente de alimentación\n220V 240 V 50 60 HZ 2000 W\n- Medida 87 5 x 35 x 53 CM"},
-            {n:"SET CUCHILLOS DE COCINA 9 PIEZAS",p:99,c:"hogar",img:"images/Cuchillos.png",desc:"-Material acero inoxidable\n-Cuchillo Cleaver , Cuchillo Cook ´s -Cuchillo para pan\n-Cuchillo universal \n-Cuchillo para fruta\n-Afilador de cuchillos \n-Tijeras  \n-Pelador\n-Base giratoria"},
-            {n:"SET DE UTENSILIOS",p:100,c:"hogar",img:"images/cuchillos3.png",desc:"-Las herramientas son resistentes y cómodas\n-La silicona de grado alimenticio es uno de los materiales más ecológicos\n-No es tóxico, no tiene olor\n-Color disponible: negro y plomo"},
-            {n:"TERMO CON JUEGO DE DOS TAZAS VACUUM",p:57.5,c:"hogar",img:"images/thermos2.png",desc:"-COLORES VARIADOS\n-NUEVO MODELO\n-INCLUYE DOS TAZAS CAPACIDAD 1000ml\n-MATERIAL ACERO INOXIDABLE"},
-            {n:"TERMO DE ACERO INOXIDABLE CON JUEGO DE DOS TAZAS",p:50,c:"hogar",img:"images/thermos.png",desc:"-ACABADO Y DISEÑO DE\nPRIMERA CALIDAD\n-CAJA DE REGALO\nELEGANTE Y ATRACTIVA                      -CAPACIDAD 500ML\n-MATERIAL ACERO INOXIDABLE\n-COLORES VARIADOS\n-MANTIENE DURANTE 12HORAS"},
-            
-            // JUEGOS (4 productos)
-            {n:"CONSOLA DE JUEGO CON MANDOS RECARGABLES",p:220,c:"juegos",img:"images/juegos2.png",desc:"- MANDOS INALAMBRICOS\n- NUEVO MODELO\n- +20000 JUEGOS\n- MEMORIA 64GB"},
-            {n:"CONSOLA DE JUEGO DE 20 000 JUEGOS",p:124,c:"juegos",img:"images/juegos.png",desc:"- 20000 JUEGOS\n- DOS MANDOS RECARGABLES\n- ALMACENAMIENTO 64GB\n- COLORES NEGRO\n- PRESENTACION EN CAJA"},
-            {n:"CONSOLA DE JUEGOS 3D CON DOS MANDOS X2",p:202,c:"juegos",img:"images/juegos4.png",desc:"- MAS DE 20000 JUEGOS\n- MANUAL\n- MANDO RECARGABLE\n- INCLUYE CABLE EXTENSION"},
-            {n:"CONSOLA DE JUEGOS 3D GAMES 5G",p:247,c:"juegos",img:"images/JUEGOS3.png",desc:"- GRAFICOS DE ALTA DEFINICIÓN\n- DOS MANDOS RECARGABLES\n- ACCESORIOS COMPLETOS\n- MAS DE 37000 JUEGOS\n- DISEÑO MODERNO Y COMPACTO"},
-            
-            // LUMINARIAS (5 productos)
-            {n:"FOCO LAMPARA SOLAR RECARGABLE 30W",p:57,c:"luminarias",img:"images/LAMPARARECAR.png",desc:"- DOS FORMAS DE CARGA,\nSOLAR Y CABLE USB\n- BASE ALUMINIO\n- COLOR BLANCO\n- BATERÍA 1200 mAh\n- TAMAÑO 113X125 MM\n- INCLUYE CABLE DE CARGA"},
-            {n:"FOCO LED A COLORES MUSICAL",p:72,c:"luminarias",img:"images/luzradio.png",desc:"- TAMAÑO 230*90MM\n- POTENCIA 48W\n- BLUETOOTH\n- COOLOR BLANCO\n- LUZ BLANCA + LUZ DE COLOR"},
-            {n:"LAMPARA MATA MOSQUITOS 2 EN 1",p:65,c:"luminarias",img:"images/lamparamosca.png",desc:"- PRACTICO Y PORTATIL\n- MEDIDAS 151010CM\n- INCLUYE CABLE DE CARGA\n- ELIMINA MOSQUITOS UTLIZANDO\nLUZ FLY TRAP"},
-            {n:"LUCES GIRNALDAS CON PANEL SOLAR",p:118,c:"luminarias",img:"images/luces.png",desc:"- CALIDA Y ACOGEDORA\n- BRILLO SUTIL\n- FACIL DE USAR\n- ALTA CALIDAD"},
-            {n:"LUZ LED SOLAR CON SENSOR DE MOVIMIENTO",p:41,c:"luminarias",img:"images/luzsolar.png",desc:"- LUMENES 600LM\n- ANGULO DE DETECCION 120º\n- MATERIAL PLASTICO ABS\n- TAMAÑO 1395\n- BATERIA 1800MAH"},
-            
-            // NOVEDADES (13 productos)
-            {n:"AUDIFONO BLUETOOTH PARA CASCO Q28",p:278,c:"novedades",img:"images/auriculares22.png",desc:"- ADMITE GRABACION DE VIDEO\n- RESOLUCION 1960*1080P\n- ASISTENTE DE VOZ INTELIGENTE\n- COMPATIBLE ANDROID / IOD\n- MEMORIA HASTA 256G"},
-            {n:"CARGADOR INALAMBRICO 3 EN 1 RELOJ DESPERTADOR CON TEMPERATURA",p:72,c:"novedades",img:"images/radioreloj.png",desc:"- COLOR NEGRO\n- PRESENTACION EN CAJA\n- PRODUCTO EN TENDENCIA\n- ACCESORIOS COMPLETOS"},
-            {n:"HIDROLAVADORA 48V",p:124,c:"novedades",img:"images/hidro.png",desc:"- PRESENTACION EN ESTUCHE\n- LONGITUD DE MANGUERA 5M\n- ACCESORIOS COMPLETOS"},
-            {n:"HIELERA PARLANTE BLUETOOH CON LUZ RGB",p:57,c:"novedades",img:"images/hielera.png",desc:"- LAVABLE\n- RECARGABLE\n- PRODUCTO EN TENDENCIA\n- BLUETOOTH\n- INCLUYE CABLE DE CARGA"},
-            {n:"INTERCOMUNICADOR PARA CASCO Q58 MAX",p:140,c:"novedades",img:"images/auriculares.png",desc:"- REDUCCION DE RUIDO INTELIGENTE\n- PANTALLA LCD\n- HASTA 25HRS DE AUTONOMIA\n- COMPATIBLE ANDROID/ IOS\n- BATERIA 1000mAh"},
-            {n:"LENTES DE SOL CON BLUETOOTH",p:48,c:"novedades",img:"images/lentes.png",desc:"- TAMAÑO 1828575MM\n- COLOR NEGRO\n- PRESENTACION EN CAJA"},
-            {n:"MAQUINA CORTADO DE PELO DEXBO",p:109,c:"novedades",img:"images/maquina1.png",desc:"- MARCA DEXBO\n- INCLUYE CABLE DE CARGA\n- BATERIA 180MIN\n- CORTE AFILADO Y DURABLE"},
-            {n:"MAQUINA CORTADORA DE CABELLO INALAMBRICA",p:110,c:"novedades",img:"images/maquina3.png",desc:"- MODELO CON DISEÑO\n- PRESENTACION EN CAJA\n- VARIEDAD DE POTENCIA\n- ACCESORIOS COMPLETOS\n- INCLUYE CABLE DE CARGA"},
-            {n:"MAQUINA CORTADORA DE PELO RECARGABLE",p:93,c:"novedades",img:"images/maquina2.png",desc:"- ALEACIÓN DE ZONC + ABS\n- POTENCIA DE SALIDA 220V - 50HZ\n- INLCUYE PEINETAS DE NIVELES\n- INCLUYE CABLE DE CARGA\n- CARGAR 110 - 220V\n- MEDIDAS: 16X4X3 CM"},
-            {n:"MORRAL FASHION ANTIROBO",p:49,c:"novedades",img:"images/morral.png",desc:"- 4 COLORES DISPONIBLES\n- NUEVO MODELO\n- MATERIAL IMPERMEABLE\n- MATERIAL DE FORRO POLIESTER\n- 1 PUERTO USB CARGA DE CELULAR"},
-            {n:"PARLANTE G BT 2301",p:57,c:"novedades",img:"images/parlanteg.png",desc:"- PARLANTE BT\n- LUCES MULTICOLOR\n- CARGA INALAMBRICA\n- INCLUYE CABLE\n- FM/ TF/ AUX/ USB\n- POTENCIA 15W\n- DISTANCIA 10M"},
-            {n:"PARLANTE G CON RELOJ 6en1",p:72,c:"novedades",img:"images/parlanteg2.png",desc:"- PARLANTE BT\n- LUCES MULTICOLOR\n- CARGA INALAMBRICA\n- INCLUYE CABLE\n- FM/ TF/ AUX/ USB\n- POTENCIA 15W\n- RELOJ DESPERTADOR"},
-            {n:"PISTOLA DE BURBUJA 32 HOYOS",p:34,c:"novedades",img:"images/burbuja.png",desc:"- 32 AGUJEROS DE BURBUJA\n- MATERIAL ABS\n- INCLUYE LIQUIDO DE BURBUJAS\n- IDEAL PARA NIÑOS\n- DOS COLORES DISPONIBLES"},
-            
-            // PARLANTES (22 productos)
-            {n:"MINI PARLANTE MAGNETICO G200",p:63,c:"parlantes",img:"images/miniparlante.png",desc:"- COLORES VARIADOS\n- DISTANCIA 10 METROS\n- ACCESORIOS COMPLETOS BLUETOOTH 5.2\n- POTENCIA 5W"},
-            {n:"MINI PARLANTE BLUETOOTH WIND 3S",p:63,c:"parlantes",img:"images/parlantes9.png",desc:"- POTENCIA 5W\n- USB/ AUX/ TF\n- BLUETOOTH 5.0\n- BATERIA 800mAh"},
-            {n:"MINI PARLANTE CILINDRICA LUZ LED",p:48,c:"parlantes",img:"images/miniparlante3.png",desc:"- MEDIDAS 6.8CM*15CM\n- MICRO SD/ USB/ BLUETOOTH\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"MINI PARLANTE CON LINTERNA Y PANEL SOLAR",p:57,c:"parlantes",img:"images/parlante panel solar3.png",desc:"- USB/ BLUETOOTH\n- TF/ FM RADIO\n- MEDIDAS 20.98.814.1CM\n- INCLUYE CABLE DE CARGA\n- BATERIA 1200mAh"},
-            {n:"MINI PARLANTE CON LUZ LED",p:57,c:"parlantes",img:"images/miniparlante6.png",desc:"- COLORES VARIADOS\n- MEDIDAS 8CM*10CM\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"MINI PARLANTE GRECTINE",p:49.5,c:"parlantes",img:"images/miniparlante2.png",desc:"- MARCA GREATNICE\n- COLORES VARIADOS\n- BT/USB/ TF/ FM RADIO/ TWS/LINEIN                                            - INCLUYE CABLE DE CARGA USB\n- BATERIA 800mAh\n- MEDIDAS 8.6x8.6x9CM"},
-            {n:"PARLANTE 4 PULGADAS CON LUZ RGB",p:63,c:"parlantes",img:"images/parlantes4.png",desc:"- BLUETOOTH/ RADIO FM\n- USB/ TF CARD/ TWS\n- BATERIA 1200mAh\n- MEDIDAS 15.412.123.2CM\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"PARLANTE LAMPARA TOUCH TACTIL",p:41,c:"parlantes",img:"images/parlante lampara.png",desc:"- LUZ LED\n- SONIDO ENVOLVENTE\n- BLUETOOTH, USB, MEMORIA\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"PARLANTE 4PULGADAS CON LINTERNA Y PANEL",p:65,c:"parlantes",img:"images/parlante panel solar4.png",desc:"- BLUETOOTH/ USB\n- TF CARD/ FM RADIO\n- BATERIA 1200mAh\n- INCLUYE CABLE DE CARGA USB\n- MEDIDAS 17.39.723.8CM"},
-            {n:"PARLANTE 8 PULGADAS CON LUCES RGB",p:88,c:"parlantes",img:"images/parlantes6.png",desc:"- MARCA GTS\n- BATERIA 1200mAh\n- MICROFONO INALAMBRICO\n- MEDIDAS 22.317.430.4CM\n- BT/ USB/ TF/ FM/ TWS"},
-            {n:"PARLANTE ALARMA PARA MOTO 2.5\" BOSSNEY",p:105,c:"parlantes",img:"images/parlante para moto.png",desc:"- USB/ FM/ MP3/ TF\n- BLUETOOTH/ ALARMA\n- COLOR NEGRO/ AZUL/ ROJO"},
-            {n:"PARLANTE ALARMA PARA MOTO 3\"",p:120,c:"parlantes",img:"images/parlante para moto2.png",desc:"- BT/ TF/ FM/ MP3/ USB 2.0\n- COLORES: NEGRO, ROJO Y AZUL"},
-            {n:"PARLANTE DE 6.5 X 2 CON MICROFONO",p:126,c:"parlantes",img:"images/parlantes3.png",desc:"- COLOR NEGRO\n- MEDUDAS 19.5*41CM\n- FM RADIO/ USB/ MICRO SD\n- INCLUYE MICROFONO\n- INCLUYE CABLE DE CARGA"},
-            {n:"PARLANTE FLIP 7 CON LUZ LED",p:84,c:"parlantes",img:"images/parlantes2.png",desc:"- COLORES VARIADOS\n- BATERIA HASTA 6HRS\n- INCLUYE CABLE DE CARGA CON LUZ LED"},
-            {n:"PARLANTE P10 PRO CON LUCES RGB",p:120,c:"parlantes",img:"images/parlantes91.png",desc:"- BLUETOOTH 5.3\n- NUEVO MODELO\n- INCLUYE DE CABLE DE CARGA\n- RADIO FM/ TF/ USB"},
-            {n:"PARLANTE PANEL SOLAR DE 4 PULGADAS",p:93,c:"parlantes",img:"images/parlantes5.png",desc:"- BT/USB/ TF/ FM RADIO/ PANEL\n- SOLAR/ LUZ DE EMERGENCIA\n- BATERIA 3000mAh\n- INCLUYE CABLE DE CARGA USB\n- MEDIDA 19x8.3x22.4CM"},
-            {n:"PARLANTE REDONDO LED",p:96,c:"parlantes",img:"images/parlantes8.png",desc:"- MARCA GTS\n- COLORES VARIADOS\n- SONIDO ENVOLVENTE\n- NUEVO MODELO RGB\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"PARLANTE ZEALOT S56 COLOR NEGRO 10W",p:156,c:"parlantes",img:"images/miniparlante5.png",desc:"- Batería 3000 mAh\n- Bluetooth versión 5.2\n- Distancia de Transmisión 10m\n- Voltaje 3.7V\n- tiempo de carga 3h\n- Peso 700g"},
-            {n:"PARLANTE ZEALOT S77 COLOR NEGRO 5W",p:125,c:"parlantes",img:"images/miniparlante4.png",desc:"- Mopdelo S77\n- Batería de 1800 mAh\n- Bluetooth versión 5.0\n- Duración aproximada 8 horas\n- Medidas 136x101x49 mm\n- Distancia de transmisión 10m\n- Waterproof IPX6"},
-            {n:"RADIO BLUETOOTH CON LINTERNA",p:79,c:"parlantes",img:"images/parlantes7.png",desc:"- MEDIDAS 19.8*14.8CM\n- INCLUYE CABLE USB DE CARGA"},
-            {n:"RADIO BOSSNEY BS R8027BTS CON PANEL SOLAR",p:80,c:"parlantes",img:"images/parlante panel solar.png",desc:"- FM/ AM/ SW1 6/ TF CARD\n- BLUETOOTH/ USB\n- PANEL SOLAR\n- TAMAÑO 15664105MM."},
-            {n:"RADIO BOSSNEY CON 3 BANDAS",p:88,c:"parlantes",img:"images/parlante panel solar2.png",desc:"- MARCA BOSSNEY\n- BT/ FM/ AM/ SW/ USB/ TF\n- PANEL SOLAR\n- BATERIA 1200mAh\n- TAMAÑO 1995095MM"},
-            
-            // SMARTWATCH (6 productos)
-            {n:"SMART WATCH CON AUDIFONO BLUETOOTH 2 EN1",p:264,c:"smartwatch",img:"images/samrt4.png",desc:"- NUEVO MODELO\n- NOVEDAD 2024\n- APLICACIONES\n- PROCTECTOR DE RELOJ\n- ACCESORIOS COMPLETOS"},
-            {n:"SMART WATCH REDONDO MILITAR",p:218,c:"smartwatch",img:"images/smart3.png",desc:"- CARGADOR INALAMBRICO\n- RECOMENDADO\n- ACCESORIOS COMPLETOS"},
-            {n:"SMARTWATCH MILITAR G1",p:249,c:"smartwatch",img:"images/SMART7.png",desc:"- IP67 ACUATICO\n- TEMPERATURAS EXTREMAS\n- GRADO MILITAR\n- SUMERGIBLE HASTA 30 MT\n- BATERÍA DE 30 DÍAS\n- DEPORTES EXTREMOS\n- LLAMADAS Y REDES SOCIALES"},
-            {n:"SMARTWATCH MILITAR PRO3",p:234,c:"smartwatch",img:"images/smart6.png",desc:"- IP67 ACUATICO\n- TEMPERATURAS EXTREMAS\n- GRADO MILITAR\n- SUMERGIBLE HASTA 30 MT\n- BATERÍA DE 30 DÍAS\n- DEPORTES EXTREMOS\n- LLAMADAS Y REDES SOCIALES"},
-            {n:"SMARTWATCH T1000 ULTRA 3",p:72,c:"smartwatch",img:"images/smart2.png",desc:"- INCLUYE 7 CORREAS\n- NOTIFICACIONES\n- DIFERENTES ESTILOS DE MENU"},
-            {n:"SMARTWATCH T900 PRO MAX L",p:72,c:"smartwatch",img:"images/smart.png",desc:"- COMPATIBLE ANDROID/ IOS\n- BATERIA 280mAh\n- NOTIFICACION DE REDES SOCIALES\n- TAMAÑO DE PANTALLA 2.4\""}
-        ];
-        
-        var cant = {};
-        var currentFilter = 'todos';
-        var currentModalProduct = null;
-        
-        function render(filtro) {
-            filtro = filtro || 'todos';
-            currentFilter = filtro;
-            
-            var cont = document.getElementById('productsList');
-            if (!cont) return;
-            
-            cont.innerHTML = '';
-            var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) { return p.c === filtro; });
-            
-            if (filtrados.length === 0) {
-                cont.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No hay productos en esta categoría</p></div>';
-                return;
-            }
-            
-            for (var j = 0; j < filtrados.length; j++) {
-                var prod = filtrados[j];
-                var idx = productos.indexOf(prod);
-                
-                if (typeof cant[idx] === 'undefined') {
-                    cant[idx] = 0;
-                }
-                
-                var imagenHtml = prod.img.indexOf('images/') >= 0 ? 
-                    '<img src="' + prod.img + '" alt="' + prod.n + '">' : 
-                    prod.img;
-                
-                var card = document.createElement('div');
-                card.className = 'product-card';
-                card.onclick = function(i) { return function() { openModal(i); }; }(idx);
-                card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="event.stopPropagation(); upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="event.stopPropagation(); upd(' + idx + ',1)">+</button></div></div>';
-                cont.appendChild(card);
-            }
-        }
-        
-        function openModal(idx) {
-            currentModalProduct = idx;
-            var prod = productos[idx];
-            
-            document.getElementById('modalTitle').textContent = prod.n;
-            document.getElementById('modalPrice').textContent = 'S/. ' + prod.p;
-            document.getElementById('modalDescription').textContent = prod.desc || 'Sin descripción disponible';
-            document.getElementById('modalQty').value = cant[idx] || 0;
-            
-            var imagenHtml = prod.img.indexOf('images/') >= 0 ? 
-                '<img src="' + prod.img + '" alt="' + prod.n + '">' : 
-                '<div style="font-size:120px">' + prod.img + '</div>';
-            document.getElementById('modalImage').innerHTML = imagenHtml;
-            
-            document.getElementById('productModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            render(currentFilter);
-        }
-        
-        function addToCartFromModal() {
-            var qty = parseInt(document.getElementById('modalQty').value);
-            if (qty > 0) {
-                closeModal();
-            } else {
-                alert('Por favor, selecciona al menos 1 unidad');
-            }
-        }
-        
-        document.getElementById('modalBtnPlus').onclick = function() {
-            upd(currentModalProduct, 1);
-            document.getElementById('modalQty').value = cant[currentModalProduct];
-        };
-        
-        document.getElementById('modalBtnMinus').onclick = function() {
-            upd(currentModalProduct, -1);
-            document.getElementById('modalQty').value = cant[currentModalProduct];
-        };
-        
-        window.onclick = function(event) {
-            if (event.target.id === 'productModal') {
-                closeModal();
-            }
-        };
-        
-        function upd(i, ch) {
-            cant[i] = Math.max(0, (cant[i] || 0) + ch);
-            var inp = document.getElementById('q' + i);
-            if (inp) inp.value = cant[i];
-            calc();
-        }
-        
-        function calc() {
-            var tot = 0;
-            for (var i = 0; i < productos.length; i++) {
-                tot += productos[i].p * (cant[i] || 0);
-            }
-            document.getElementById('totalAmount').textContent = tot.toFixed(2);
-        }
-        
-        var filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                render(this.getAttribute('data-category'));
-            });
-        });
-        
-            document.getElementById('orderForm').onsubmit = function(e) {
-            e.preventDefault();
-    
-            var prods = [];
-            var tot = 0;
-    
-            for (var i = 0; i < productos.length; i++) {
-            if (cant[i] > 0) {
-                prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
-                tot += productos[i].p * cant[i];
-            }
-        }
-    
-            if (prods.length === 0) {
-            alert('Por favor, selecciona al menos un producto');
-            return;
-        }
-    
-    var data = {
-        cliente: document.getElementById('nombre').value,
-        correo: document.getElementById('correo').value,
-        telefono: document.getElementById('telefono').value,
-        direccion: document.getElementById('direccion').value,
-        productos: prods.join(', '),
-        total: tot.toFixed(2),
-        comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
-    };
-    
-    // Mostrar modal inmediatamente
-    showConfirmationModal();
-    
-    // Limpiar formulario
-    document.getElementById('orderForm').reset();
-    cant = {};
-    render(currentFilter);
-    calc();
-    
-    // Enviar en segundo plano
-    fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    }).then(function(response) {
-        console.log('Pedido enviado correctamente');
-    }).catch(function(err) {
-        console.error('Error al enviar:', err);
-    });
-};
-        
-        function showConfirmationModal() {
-            document.getElementById('confirmationModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeConfirmationModal() {
-            document.getElementById('confirmationModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Detectar filtro de categoría desde URL
-function getCategoryFromURL() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var categoria = urlParams.get('categoria');
-    return categoria || 'todos';
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background: #f5f5f5;
+padding: 0;
 }
 
-        // Aplicar filtro inicial
-        var initialCategory = getCategoryFromURL();
-        if (initialCategory !== 'todos') {
-            // Activar el botón de filtro correcto
-            var filterBtns = document.querySelectorAll('.filter-btn');
-            filterBtns.forEach(function(btn) {
-                if (btn.getAttribute('data-category') === initialCategory) {
-                    filterBtns.forEach(function(b) { b.classList.remove('active'); });
-                    btn.classList.add('active');
-                }
-            });
-        }
-        
-        render(initialCategory);
+.header {
+background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
+color: white;
+padding: 20px;
+text-align: center;
+box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+position: relative;
+}
 
-        // Verificar si hay un producto para agregar desde index.html
+.header h1 {
+font-size: 32px;
+margin-bottom: 5px;
+}
+
+.header p {
+font-size: 16px;
+opacity: 0.9;
+}
+
+.back-link {
+position: absolute;
+top: 20px;
+left: 20px;
+color: white;
+text-decoration: none;
+font-size: 16px;
+opacity: 0.9;
+}
+
+.back-link:hover {
+opacity: 1;
+}
+
+.container {
+max-width: 1400px;
+margin: 0 auto;
+padding: 40px 20px;
+}
+
+.form-section {
+background: white;
+border-radius: 15px;
+padding: 30px;
+margin-bottom: 30px;
+box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-section h2 {
+color: #333;
+margin-bottom: 20px;
+font-size: 24px;
+border-bottom: 3px solid #2f8d07;
+padding-bottom: 10px;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+color: #333;
+font-weight: 600;
+font-size: 14px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+width: 100%;
+padding: 12px 15px;
+border: 2px solid #e0e0e0;
+border-radius: 8px;
+font-size: 15px;
+transition: border-color 0.3s;
+}
+
+input:focus,
+textarea:focus {
+outline: none;
+border-color: #2f8d07;
+}
+
+.filter-section {
+display: flex;
+gap: 10px;
+margin-bottom: 30px;
+overflow-x: auto;
+padding: 10px 0;
+}
+
+.filter-btn {
+padding: 12px 24px;
+border: 2px solid #2f8d07;
+background: white;
+color: #2f8d07;
+border-radius: 25px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 600;
+white-space: nowrap;
+transition: all 0.3s;
+}
+
+.filter-btn:hover {
+background: #e8f5e9;
+}
+
+.filter-btn.active {
+background: #2f8d07;
+color: white;
+}
+
+.products-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 30px;
+padding: 20px 0;
+}
+
+.product-card {
+background: white;
+border-radius: 15px;
+overflow: hidden;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+transition: transform 0.3s, box-shadow 0.3s;
+cursor: pointer;
+}
+
+.product-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 25px rgba(47, 141, 7, 0.3);
+}
+
+.product-image {
+width: 100%;
+height: 220px;
+background: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 80px;
+border-bottom: 1px solid #e0e0e0;
+}
+
+.product-image img {
+width: 100%;
+height: 100%;
+object-fit: contain;
+padding: 20px;
+background: white;
+}
+
+.product-info {
+padding: 20px;
+}
+
+.product-name {
+font-weight: 600;
+color: #333;
+font-size: 16px;
+margin-bottom: 10px;
+min-height: 40px;
+}
+
+.product-price {
+color: #2f8d07;
+font-size: 24px;
+font-weight: 700;
+margin-bottom: 15px;
+}
+
+.quantity-control {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+padding-top: 15px;
+border-top: 1px solid #e0e0e0;
+}
+
+.qty-btn {
+background: #2f8d07;
+color: white;
+border: none;
+width: 36px;
+height: 36px;
+border-radius: 50%;
+font-size: 20px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.3s;
+}
+
+.qty-btn:hover {
+background: #267005;
+}
+
+.qty-btn:active {
+transform: scale(0.95);
+}
+
+.qty-input {
+width: 60px;
+text-align: center;
+padding: 8px;
+border: 2px solid #e0e0e0;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 600;
+}
+
+.total-section {
+background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
+color: white;
+padding: 30px;
+border-radius: 15px;
+text-align: center;
+box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+margin-bottom: 30px;
+}
+
+.total-label {
+font-size: 18px;
+margin-bottom: 10px;
+opacity: 0.9;
+}
+
+.total-amount {
+font-size: 32px;
+font-weight: 700;
+color: white;
+}
+
+.submit-btn {
+width: 100%;
+background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
+color: white;
+border: none;
+padding: 18px;
+font-size: 18px;
+font-weight: 600;
+border-radius: 12px;
+cursor: pointer;
+transition: transform 0.3s, box-shadow 0.3s;
+box-shadow: 0 4px 15px rgba(47, 141, 7, 0.4);
+}
+
+.submit-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(47, 141, 7, 0.6);
+}
+
+.submit-btn:active {
+transform: translateY(0);
+}
+
+.empty-state {
+text-align: center;
+padding: 60px 20px;
+color: #999;
+}
+
+.empty-state-icon {
+font-size: 80px;
+margin-bottom: 20px;
+}
+
+.modal {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7);
+animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+.modal-content {
+background: white;
+margin: 5% auto;
+padding: 0;
+border-radius: 20px;
+width: 90%;
+max-width: 800px;
+max-height: 85vh;
+overflow-y: auto;
+box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+from { transform: translateY(50px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+position: relative;
+padding: 0;
+}
+
+.modal-close {
+position: absolute;
+top: 20px;
+right: 20px;
+background: white;
+border: none;
+font-size: 32px;
+cursor: pointer;
+width: 40px;
+height: 40px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+z-index: 10;
+color: #666;
+transition: all 0.3s;
+}
+
+.modal-close:hover {
+background: #f44336;
+color: white;
+transform: rotate(90deg);
+}
+
+.modal-image {
+width: 100%;
+height: 400px;
+background: white;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 20px 20px 0 0;
+overflow: hidden;
+}
+
+.modal-image img {
+max-width: 100%;
+max-height: 100%;
+object-fit: contain;
+padding: 30px;
+}
+
+.modal-body {
+padding: 30px;
+}
+
+.modal-title {
+font-size: 28px;
+font-weight: 700;
+color: #333;
+margin-bottom: 10px;
+}
+
+.modal-price {
+font-size: 36px;
+font-weight: 700;
+color: #2f8d07;
+margin-bottom: 20px;
+}
+
+.modal-description {
+color: #666;
+line-height: 1.8;
+margin-bottom: 30px;
+white-space: pre-line;
+}
+
+.modal-quantity {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 20px;
+}
+
+.modal-quantity label {
+font-weight: 600;
+font-size: 16px;
+}
+
+.modal-qty-controls {
+display: flex;
+align-items: center;
+gap: 15px;
+}
+
+.modal-add-btn {
+width: 100%;
+background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
+color: white;
+border: none;
+padding: 18px;
+font-size: 18px;
+font-weight: 600;
+border-radius: 12px;
+cursor: pointer;
+transition: transform 0.3s, box-shadow 0.3s;
+box-shadow: 0 4px 15px rgba(47, 141, 7, 0.4);
+}
+
+.modal-add-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(47, 141, 7, 0.6);
+}
+
+.confirmation-modal {
+display: none;
+position: fixed;
+z-index: 2000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.8);
+animation: fadeIn 0.3s;
+}
+
+.confirmation-content {
+background: white;
+margin: 15% auto;
+padding: 0;
+border-radius: 20px;
+width: 90%;
+max-width: 500px;
+box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+animation: slideUp 0.3s;
+text-align: center;
+}
+
+.confirmation-icon {
+background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+padding: 40px;
+border-radius: 20px 20px 0 0;
+}
+
+.confirmation-icon-inner {
+font-size: 80px;
+animation: bounce 0.6s;
+}
+
+@keyframes bounce {
+0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+40% { transform: translateY(-20px); }
+60% { transform: translateY(-10px); }
+}
+
+.confirmation-body {
+padding: 40px 30px 30px 30px;
+}
+
+.confirmation-title {
+font-size: 28px;
+font-weight: 700;
+color: #333;
+margin-bottom: 15px;
+}
+
+.confirmation-message {
+font-size: 16px;
+color: #666;
+line-height: 1.6;
+margin-bottom: 30px;
+}
+
+.confirmation-btn {
+width: 100%;
+background: linear-gradient(135deg, #2f8d07 0%, #267005 100%);
+color: white;
+border: none;
+padding: 16px;
+font-size: 18px;
+font-weight: 600;
+border-radius: 12px;
+cursor: pointer;
+transition: transform 0.3s, box-shadow 0.3s;
+box-shadow: 0 4px 15px rgba(47, 141, 7, 0.4);
+}
+
+.confirmation-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(47, 141, 7, 0.6);
+}
+
+.confirmation-btn:active {
+transform: translateY(0);
+}
+
+@media screen and (max-width: 768px) {
+.header h1 { font-size: 24px; }
+.back-link { position: relative; display: block; margin-bottom: 10px; top: 0; left: 0; }
+.container { padding: 20px 10px; }
+.form-section { padding: 20px; }
+.form-section h2 { font-size: 20px; }
+.products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+.product-image { height: 160px; font-size: 60px; }
+.product-info { padding: 15px; }
+.product-name { font-size: 14px; min-height: 35px; }
+.product-price { font-size: 20px; }
+.total-amount { font-size: 36px; }
+.filter-section { gap: 8px; }
+.filter-btn { padding: 10px 18px; font-size: 13px; }
+.modal-content { width: 95%; margin: 10% auto; }
+.modal-image { height: 250px; }
+.modal-body { padding: 20px; }
+.modal-title { font-size: 22px; }
+.modal-price { font-size: 28px; }
+.confirmation-content { width: 85%; }
+.confirmation-icon { padding: 30px; }
+.confirmation-icon-inner { font-size: 60px; }
+.confirmation-title { font-size: 24px; }
+.confirmation-message { font-size: 14px; }
+}
+
+@media screen and (max-width: 480px) {
+.products-grid { grid-template-columns: 1fr 1fr; }
+.product-image { height: 180px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+<a href="index.html" class="back-link">← Volver al inicio</a>
+<h1>🛒 Catálogo Montibazar</h1>
+<p>Selecciona tus productos y completa tu pedido</p>
+</div>
+
+<div class="container">
+<form id="orderForm">
+<div class="form-section">
+<h2>📋 Tus Datos</h2>
+<div class="form-group">
+<label>Nombre Completo *</label>
+<input type="text" id="nombre" required placeholder="Ej: Juan Pérez">
+</div>
+<div class="form-group">
+<label>Correo Electrónico *</label>
+<input type="email" id="correo" required placeholder="ejemplo@correo.com">
+</div>
+<div class="form-group">
+<label>Teléfono / WhatsApp *</label>
+<input type="tel" id="telefono" required placeholder="999 888 777">
+</div>
+<div class="form-group">
+<label>Dirección de Entrega *</label>
+<input type="text" id="direccion" required placeholder="Av. Ejemplo 123, Lima">
+</div>
+</div>
+
+<div class="form-section">
+<h2>📦 Selecciona tus Productos</h2>
+
+<div class="filter-section">
+<button type="button" class="filter-btn active" data-category="todos">🛍️ Todos</button>
+<button type="button" class="filter-btn" data-category="hogar">🏡 Hogar</button>
+<button type="button" class="filter-btn" data-category="parlantes">🔊 Parlantes</button>
+<button type="button" class="filter-btn" data-category="luminarias">💡 Luminarias</button>
+<button type="button" class="filter-btn" data-category="juegos">🎮 Juegos</button>
+<button type="button" class="filter-btn" data-category="smartwatch">⌚ Smartwatch</button>
+<button type="button" class="filter-btn" data-category="novedades">🎇 Novedades</button>
+</div>
+
+<div id="productsList" class="products-grid"></div>
+</div>
+
+<div class="total-section">
+<div class="total-label">Total a pagar:</div>
+<div class="total-amount">S/. <span id="totalAmount">0.00</span></div>
+</div>
+
+<div class="form-section">
+<h2>💬 Comentarios Adicionales</h2>
+<textarea id="comentarios" rows="3" placeholder="¿Alguna indicación especial para tu pedido?"></textarea>
+</div>
+
+<button type="submit" class="submit-btn">🛒 Enviar Pedido</button>
+</form>
+</div>
+
+<div id="productModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<button class="modal-close" onclick="closeModal()">×</button>
+<div class="modal-image" id="modalImage"></div>
+</div>
+<div class="modal-body">
+<h2 class="modal-title" id="modalTitle"></h2>
+<div class="modal-price" id="modalPrice"></div>
+<div class="modal-description" id="modalDescription"></div>
+<div class="modal-quantity">
+<label>Cantidad:</label>
+<div class="modal-qty-controls">
+<button type="button" class="qty-btn" id="modalBtnMinus">−</button>
+<input type="number" class="qty-input" id="modalQty" value="0" readonly>
+<button type="button" class="qty-btn" id="modalBtnPlus">+</button>
+</div>
+</div>
+<button type="button" class="modal-add-btn" onclick="addToCartFromModal()">Agregar al carrito</button>
+</div>
+</div>
+</div>
+
+<div id="confirmationModal" class="confirmation-modal">
+<div class="confirmation-content">
+<div class="confirmation-icon">
+<div class="confirmation-icon-inner">✅</div>
+</div>
+<div class="confirmation-body">
+<h2 class="confirmation-title">¡Pedido Enviado!</h2>
+<p class="confirmation-message">Tu pedido ha sido enviado exitosamente. Nos pondremos en contacto contigo pronto para coordinar la entrega.</p>
+<button class="confirmation-btn" onclick="closeConfirmationModal()">Aceptar</button>
+</div>
+</div>
+</div>
+
+<script>
+const WEBHOOK_URL = 'https://hook.us2.make.com/xjj0rp9t2kq9tys18ywpwt4e0a9qb2rg';
+
+var productos = [
+{n:"BATIDORA DE MANO ELECTRICA DE 600W",p:96,c:"hogar",img:"images/batidora2.png",desc:"- Regulador de 5 velocidades\n- 600 Watts Potente motor para trabajo continuo\n- Motor de alto desempeño y suave funcionamiento\n- Doble accesorio (batir y amasar)\n- 220 - 240 V 50 60 HZ 600 W\n- Medidas 66 5 x 41 x 40 CM"},
+{n:"CAFETERA ELECTRICA 625mL",p:126,c:"hogar",img:"images/cafetera.png",desc:"- APAGADO AUTOMATICO\n- FILTRO PERMANENTE CON ASA\n- INDICADOR DE NIVEL DE AGUA\n- POTENCIA 650W/ 220 240V, 50 60Hz\n- MEDIDAS 49.54755.5cm"},
+{n:"CARRITO ORGANIZADOR 3 NIVELES CON RUEDAS",p:95,c:"hogar",img:"images/organizador2.png",desc:"- MEDIDAS 423585CM\n- RUEDAS UNIVERSALES DE 360º\n- MATERIAL METAL Y PLASTICO ABS\n- ORGANIZADOR MULTIFUNCIONAL"},
+{n:"ESTANTE ORGANIZADOR DE COCINA 3 NIVELES",p:58,c:"hogar",img:"images/organizador.png",desc:"- MEDIDA 732750.5CM\n- COLOR NEGRO\n- MATERIAL DE ALTA CALIDAD\n- PRESENTACION EN CAJA DESARMADO"},
+{n:"HERVIDOR ELECTRICO 2.5L BOTON AUTOMATICO",p:72,c:"hogar",img:"images/hervidor2.png",desc:"- Hervidor de acero inoxidable\n- Facilidad de rotación 360\n- Capacidad Máxima 2 0 L\n- Tapa con cierre de seguridad\n- Botón de encendido/apagado automático\n- 220-240 V 50 60 HZ 1500 W\n- Medida 84 5 x 40 5 x 49"},
+{n:"HERVIDOR ELECTRICO PLASTICO 2.3L",p:72,c:"hogar",img:"images/hervidor.png",desc:"- Hervidor de plástico\n- Facilidad de rotación 360\n- Capacidad Máxima 2 3 L\n- Filtro removible y lavable\n- Tapa con cierre de seguridad\n- Botón de encendido/apagado automático\n- 220-240 V 50 60 HZ 1500 W\n- Medida 69 5 x 43 x 47 5 CM"},
+{n:"JUEGO DE CUCHILLOS DE 6 PIEZAS",p:65.5,c:"hogar",img:"images/cuchillos4.png",desc:"-HOJAS DE ACERO INOXIDABLE\n-MANGO DE PLASTICO\n-APTO PARA LAVAVAJILLAS"},
+{n:"LICUADORA STARLUX 2 EN 1 1.5LITROS",p:126,c:"hogar",img:"images/licuadora.png",desc:"- HOJA DE ACERO INOXIDABLE\n- 3 VELOCIDADES / POTENCIA 800W\n- VASO DE CRISTAL PEQUEÑO PARA JUGOS INSTANTANEOS\nY MODELOR DE ESPECIAS"},
+{n:"MAQUINA TOSTADORA 650W",p:110,c:"hogar",img:"images/tostadora1.png",desc:"-5 VELOCIDADES\n-APAGADO AUTOMATICO\n-220 240V , 50 60Hz, 650W\n-AJUSTE SUAVE DEL NIVEL DE TOSTADO\n-EXPULSION AUTOMATICA DE TOSTADAS"},
+{n:"MINI BATIDORA ELECTRICA DE 260W",p:67,c:"hogar",img:"images/batidora.png",desc:"La potencia del motor de una batidora es una de las características más importantes de estos aparatos. Las que se\nconsideran profesionales y de buena calidad tienen motores con\npotencia de hasta 260W, mientras que las industriales superan los\n1000 W."},
+{n:"ORGANIZADOR ESTANTE DE BAÑO",p:80,c:"hogar",img:"images/organizador3.png",desc:"- 3 NIVELES\n- MATERIAL METAL\n- COLOR BLANCO\n- RESISTENTE AL AGUA Y ANTIOXIDANTE\n- IDEAL PARA MAXIMIZAR EL ESPACIO DE TU BAÑO"},
+{n:"PLANCHA A VAPOR ELECTRICO",p:80,c:"hogar",img:"images/plancha.png",desc:"• POTENCIA 1200 W\n• 220 240 V, 50 60 Hz\n• MEDIDAS 59 28 5 56 CM\n• TEMPERATURA AJUSTABLE\n• CERAMICO ANTIADHERENTE"},
+{n:"PLANCHA ALIZADORA DE CABELLO",p:72,c:"hogar",img:"images/lizadora.png",desc:"Las planchas de pelo, también conocidas como alisadoras, son\ndispositivos eléctricos que sirven para alisar, rizar y modelar el\ncabello. Para ello, pueden emplear calor infrarrojo, vapor de agua,\niones negativos y/o resistencias eléctricas mediante placas de\ntitanio, de cerámica o de otros muchos materiales BM"},
+{n:"PLANCHA ELECTRICA DE ROPA",p:110,c:"hogar",img:"images/plancha2.png",desc:"• POTENCIA 2200 W\n• MEDIDAS 56 28 5 63 CM\n• VENTANA DE AGUA TRANSPARENTE\n• PLACA CERAMINCA ANTIDHERENTE\n• TEMPERATURA AJUSTABLE"},
+{n:"SANDWICHERA 800W BM 002A",p:98,c:"hogar",img:"images/sanguchera.png",desc:"Saludable y duradero. La placa calefactora está hecha de material\nresistente a altas temperaturas, con alta densidad y buena resistencia a la adhesión. Antiadherente: el revestimiento antiadherente de grado alimenticio lo hace seguro y fácil de moldear y limpiar y calentar."},
+{n:"SANDWICHERA 800W BM 002D",p:98,c:"hogar",img:"images/sanguchera2.png",desc:"• PLACA CON REVESTIMIENTO ANTIADHERENTE\n• MEDIDAS 50CM3050CM\n• 220 240V , 50 60Hz\n• SOPORTE VERTICAL PARA UN ALMACENAMIENTO COMPACTO\nY AHORRO DE ESPACIO"},
+{n:"SECADORA DE CABELLO DORADA",p:72,c:"hogar",img:"images/secadora.png",desc:"- 3 modos de temperatura\n- 2 modos de velocidad\n- Difusor y boquilla de peinado profesional\n- Filtro de entrada de aire\n- Fuente de alimentación\n220V 240 V 50 60 HZ 2000 W\n- Medida 87 5 x 35 x 53 CM"},
+{n:"SET CUCHILLOS DE COCINA 9 PIEZAS",p:99,c:"hogar",img:"images/Cuchillos.png",desc:"-Material acero inoxidable\n-Cuchillo Cleaver , Cuchillo Cook ´s -Cuchillo para pan\n-Cuchillo universal \n-Cuchillo para fruta\n-Afilador de cuchillos \n-Tijeras  \n-Pelador\n-Base giratoria"},
+{n:"SET DE UTENSILIOS",p:100,c:"hogar",img:"images/cuchillos3.png",desc:"-Las herramientas son resistentes y cómodas\n-La silicona de grado alimenticio es uno de los materiales más ecológicos\n-No es tóxico, no tiene olor\n-Color disponible: negro y plomo"},
+{n:"TERMO CON JUEGO DE DOS TAZAS VACUUM",p:57.5,c:"hogar",img:"images/thermos2.png",desc:"-COLORES VARIADOS\n-NUEVO MODELO\n-INCLUYE DOS TAZAS CAPACIDAD 1000ml\n-MATERIAL ACERO INOXIDABLE"},
+{n:"TERMO DE ACERO INOXIDABLE CON JUEGO DE DOS TAZAS",p:50,c:"hogar",img:"images/thermos.png",desc:"-ACABADO Y DISEÑO DE\nPRIMERA CALIDAD\n-CAJA DE REGALO\nELEGANTE Y ATRACTIVA                      -CAPACIDAD 500ML\n-MATERIAL ACERO INOXIDABLE\n-COLORES VARIADOS\n-MANTIENE DURANTE 12HORAS"},
+{n:"CONSOLA DE JUEGO CON MANDOS RECARGABLES",p:220,c:"juegos",img:"images/juegos2.png",desc:"- MANDOS INALAMBRICOS\n- NUEVO MODELO\n- +20000 JUEGOS\n- MEMORIA 64GB"},
+{n:"CONSOLA DE JUEGO DE 20 000 JUEGOS",p:124,c:"juegos",img:"images/juegos.png",desc:"- 20000 JUEGOS\n- DOS MANDOS RECARGABLES\n- ALMACENAMIENTO 64GB\n- COLORES NEGRO\n- PRESENTACION EN CAJA"},
+{n:"CONSOLA DE JUEGOS 3D CON DOS MANDOS X2",p:202,c:"juegos",img:"images/juegos4.png",desc:"- MAS DE 20000 JUEGOS\n- MANUAL\n- MANDO RECARGABLE\n- INCLUYE CABLE EXTENSION"},
+{n:"CONSOLA DE JUEGOS 3D GAMES 5G",p:247,c:"juegos",img:"images/JUEGOS3.png",desc:"- GRAFICOS DE ALTA DEFINICIÓN\n- DOS MANDOS RECARGABLES\n- ACCESORIOS COMPLETOS\n- MAS DE 37000 JUEGOS\n- DISEÑO MODERNO Y COMPACTO"},
+{n:"FOCO LAMPARA SOLAR RECARGABLE 30W",p:57,c:"luminarias",img:"images/LAMPARARECAR.png",desc:"- DOS FORMAS DE CARGA,\nSOLAR Y CABLE USB\n- BASE ALUMINIO\n- COLOR BLANCO\n- BATERÍA 1200 mAh\n- TAMAÑO 113X125 MM\n- INCLUYE CABLE DE CARGA"},
+{n:"FOCO LED A COLORES MUSICAL",p:72,c:"luminarias",img:"images/luzradio.png",desc:"- TAMAÑO 23090MM\n- POTENCIA 48W\n- BLUETOOTH\n- COOLOR BLANCO\n- LUZ BLANCA + LUZ DE COLOR"},
+{n:"LAMPARA MATA MOSQUITOS 2 EN 1",p:65,c:"luminarias",img:"images/lamparamosca.png",desc:"- PRACTICO Y PORTATIL\n- MEDIDAS 151010CM\n- INCLUYE CABLE DE CARGA\n- ELIMINA MOSQUITOS UTLIZANDO\nLUZ FLY TRAP"},
+{n:"LUCES GIRNALDAS CON PANEL SOLAR",p:118,c:"luminarias",img:"images/luces.png",desc:"- CALIDA Y ACOGEDORA\n- BRILLO SUTIL\n- FACIL DE USAR\n- ALTA CALIDAD"},
+{n:"LUZ LED SOLAR CON SENSOR DE MOVIMIENTO",p:41,c:"luminarias",img:"images/luzsolar.png",desc:"- LUMENES 600LM\n- ANGULO DE DETECCION 120º\n- MATERIAL PLASTICO ABS\n- TAMAÑO 1395\n- BATERIA 1800MAH"},
+{n:"AUDIFONO BLUETOOTH PARA CASCO Q28",p:278,c:"novedades",img:"images/auriculares22.png",desc:"- ADMITE GRABACION DE VIDEO\n- RESOLUCION 19601080P\n- ASISTENTE DE VOZ INTELIGENTE\n- COMPATIBLE ANDROID / IOD\n- MEMORIA HASTA 256G"},
+{n:"CARGADOR INALAMBRICO 3 EN 1 RELOJ DESPERTADOR CON TEMPERATURA",p:72,c:"novedades",img:"images/radioreloj.png",desc:"- COLOR NEGRO\n- PRESENTACION EN CAJA\n- PRODUCTO EN TENDENCIA\n- ACCESORIOS COMPLETOS"},
+{n:"HIDROLAVADORA 48V",p:124,c:"novedades",img:"images/hidro.png",desc:"- PRESENTACION EN ESTUCHE\n- LONGITUD DE MANGUERA 5M\n- ACCESORIOS COMPLETOS"},
+{n:"HIELERA PARLANTE BLUETOOH CON LUZ RGB",p:57,c:"novedades",img:"images/hielera.png",desc:"- LAVABLE\n- RECARGABLE\n- PRODUCTO EN TENDENCIA\n- BLUETOOTH\n- INCLUYE CABLE DE CARGA"},
+{n:"INTERCOMUNICADOR PARA CASCO Q58 MAX",p:140,c:"novedades",img:"images/auriculares.png",desc:"- REDUCCION DE RUIDO INTELIGENTE\n- PANTALLA LCD\n- HASTA 25HRS DE AUTONOMIA\n- COMPATIBLE ANDROID/ IOS\n- BATERIA 1000mAh"},
+{n:"LENTES DE SOL CON BLUETOOTH",p:48,c:"novedades",img:"images/lentes.png",desc:"- TAMAÑO 1828575MM\n- COLOR NEGRO\n- PRESENTACION EN CAJA"},
+{n:"MAQUINA CORTADO DE PELO DEXBO",p:109,c:"novedades",img:"images/maquina1.png",desc:"- MARCA DEXBO\n- INCLUYE CABLE DE CARGA\n- BATERIA 180MIN\n- CORTE AFILADO Y DURABLE"},
+{n:"MAQUINA CORTADORA DE CABELLO INALAMBRICA",p:110,c:"novedades",img:"images/maquina3.png",desc:"- MODELO CON DISEÑO\n- PRESENTACION EN CAJA\n- VARIEDAD DE POTENCIA\n- ACCESORIOS COMPLETOS\n- INCLUYE CABLE DE CARGA"},
+{n:"MAQUINA CORTADORA DE PELO RECARGABLE",p:93,c:"novedades",img:"images/maquina2.png",desc:"- ALEACIÓN DE ZONC + ABS\n- POTENCIA DE SALIDA 220V - 50HZ\n- INLCUYE PEINETAS DE NIVELES\n- INCLUYE CABLE DE CARGA\n- CARGAR 110 - 220V\n- MEDIDAS: 16X4X3 CM"},
+{n:"MORRAL FASHION ANTIROBO",p:49,c:"novedades",img:"images/morral.png",desc:"- 4 COLORES DISPONIBLES\n- NUEVO MODELO\n- MATERIAL IMPERMEABLE\n- MATERIAL DE FORRO POLIESTER\n- 1 PUERTO USB CARGA DE CELULAR"},
+{n:"PARLANTE G BT 2301",p:57,c:"novedades",img:"images/parlanteg.png",desc:"- PARLANTE BT\n- LUCES MULTICOLOR\n- CARGA INALAMBRICA\n- INCLUYE CABLE\n- FM/ TF/ AUX/ USB\n- POTENCIA 15W\n- DISTANCIA 10M"},
+{n:"PARLANTE G CON RELOJ 6en1",p:72,c:"novedades",img:"images/parlanteg2.png",desc:"- PARLANTE BT\n- LUCES MULTICOLOR\n- CARGA INALAMBRICA\n- INCLUYE CABLE\n- FM/ TF/ AUX/ USB\n- POTENCIA 15W\n- RELOJ DESPERTADOR"},
+{n:"PISTOLA DE BURBUJA 32 HOYOS",p:34,c:"novedades",img:"images/burbuja.png",desc:"- 32 AGUJEROS DE BURBUJA\n- MATERIAL ABS\n- INCLUYE LIQUIDO DE BURBUJAS\n- IDEAL PARA NIÑOS\n- DOS COLORES DISPONIBLES"},
+{n:"MINI PARLANTE MAGNETICO G200",p:63,c:"parlantes",img:"images/miniparlante.png",desc:"- COLORES VARIADOS\n- DISTANCIA 10 METROS\n- ACCESORIOS COMPLETOS BLUETOOTH 5.2\n- POTENCIA 5W"},
+{n:"MINI PARLANTE BLUETOOTH WIND 3S",p:63,c:"parlantes",img:"images/parlantes9.png",desc:"- POTENCIA 5W\n- USB/ AUX/ TF\n- BLUETOOTH 5.0\n- BATERIA 800mAh"},
+{n:"MINI PARLANTE CILINDRICA LUZ LED",p:48,c:"parlantes",img:"images/miniparlante3.png",desc:"- MEDIDAS 6.8CM15CM\n- MICRO SD/ USB/ BLUETOOTH\n- INCLUYE CABLE USB DE CARGA"},
+{n:"MINI PARLANTE CON LINTERNA Y PANEL SOLAR",p:57,c:"parlantes",img:"images/parlante panel solar3.png",desc:"- USB/ BLUETOOTH\n- TF/ FM RADIO\n- MEDIDAS 20.98.814.1CM\n- INCLUYE CABLE DE CARGA\n- BATERIA 1200mAh"},
+{n:"MINI PARLANTE CON LUZ LED",p:57,c:"parlantes",img:"images/miniparlante6.png",desc:"- COLORES VARIADOS\n- MEDIDAS 8CM10CM\n- INCLUYE CABLE USB DE CARGA"},
+{n:"MINI PARLANTE GRECTINE",p:49.5,c:"parlantes",img:"images/miniparlante2.png",desc:"- MARCA GREATNICE\n- COLORES VARIADOS\n- BT/USB/ TF/ FM RADIO/ TWS/LINEIN                                            - INCLUYE CABLE DE CARGA USB\n- BATERIA 800mAh\n- MEDIDAS 8.6x8.6x9CM"},
+{n:"PARLANTE 4 PULGADAS CON LUZ RGB",p:63,c:"parlantes",img:"images/parlantes4.png",desc:"- BLUETOOTH/ RADIO FM\n- USB/ TF CARD/ TWS\n- BATERIA 1200mAh\n- MEDIDAS 15.412.123.2CM\n- INCLUYE CABLE USB DE CARGA"},
+{n:"PARLANTE LAMPARA TOUCH TACTIL",p:41,c:"parlantes",img:"images/parlante lampara.png",desc:"- LUZ LED\n- SONIDO ENVOLVENTE\n- BLUETOOTH, USB, MEMORIA\n- INCLUYE CABLE USB DE CARGA"},
+{n:"PARLANTE 4PULGADAS CON LINTERNA Y PANEL",p:65,c:"parlantes",img:"images/parlante panel solar4.png",desc:"- BLUETOOTH/ USB\n- TF CARD/ FM RADIO\n- BATERIA 1200mAh\n- INCLUYE CABLE DE CARGA USB\n- MEDIDAS 17.39.723.8CM"},
+{n:"PARLANTE 8 PULGADAS CON LUCES RGB",p:88,c:"parlantes",img:"images/parlantes6.png",desc:"- MARCA GTS\n- BATERIA 1200mAh\n- MICROFONO INALAMBRICO\n- MEDIDAS 22.317.430.4CM\n- BT/ USB/ TF/ FM/ TWS"},
+{n:"PARLANTE ALARMA PARA MOTO 2.5\" BOSSNEY",p:105,c:"parlantes",img:"images/parlante para moto.png",desc:"- USB/ FM/ MP3/ TF\n- BLUETOOTH/ ALARMA\n- COLOR NEGRO/ AZUL/ ROJO"},
+{n:"PARLANTE ALARMA PARA MOTO 3\"",p:120,c:"parlantes",img:"images/parlante para moto2.png",desc:"- BT/ TF/ FM/ MP3/ USB 2.0\n- COLORES: NEGRO, ROJO Y AZUL"},
+{n:"PARLANTE DE 6.5 X 2 CON MICROFONO",p:126,c:"parlantes",img:"images/parlantes3.png",desc:"- COLOR NEGRO\n- MEDUDAS 19.5*41CM\n- FM RADIO/ USB/ MICRO SD\n- INCLUYE MICROFONO\n- INCLUYE CABLE DE CARGA"},
+{n:"PARLANTE FLIP 7 CON LUZ LED",p:84,c:"parlantes",img:"images/parlantes2.png",desc:"- COLORES VARIADOS\n- BATERIA HASTA 6HRS\n- INCLUYE CABLE DE CARGA CON LUZ LED"},
+{n:"PARLANTE P10 PRO CON LUCES RGB",p:120,c:"parlantes",img:"images/parlantes91.png",desc:"- BLUETOOTH 5.3\n- NUEVO MODELO\n- INCLUYE DE CABLE DE CARGA\n- RADIO FM/ TF/ USB"},
+{n:"PARLANTE PANEL SOLAR DE 4 PULGADAS",p:93,c:"parlantes",img:"images/parlantes5.png",desc:"- BT/USB/ TF/ FM RADIO/ PANEL\n- SOLAR/ LUZ DE EMERGENCIA\n- BATERIA 3000mAh\n- INCLUYE CABLE DE CARGA USB\n- MEDIDA 19x8.3x22.4CM"},
+{n:"PARLANTE REDONDO LED",p:96,c:"parlantes",img:"images/parlantes8.png",desc:"- MARCA GTS\n- COLORES VARIADOS\n- SONIDO ENVOLVENTE\n- NUEVO MODELO RGB\n- INCLUYE CABLE USB DE CARGA"},
+{n:"PARLANTE ZEALOT S56 COLOR NEGRO 10W",p:156,c:"parlantes",img:"images/miniparlante5.png",desc:"- Batería 3000 mAh\n- Bluetooth versión 5.2\n- Distancia de Transmisión 10m\n- Voltaje 3.7V\n- tiempo de carga 3h\n- Peso 700g"},
+{n:"PARLANTE ZEALOT S77 COLOR NEGRO 5W",p:125,c:"parlantes",img:"images/miniparlante4.png",desc:"- Mopdelo S77\n- Batería de 1800 mAh\n- Bluetooth versión 5.0\n- Duración aproximada 8 horas\n- Medidas 136x101x49 mm\n- Distancia de transmisión 10m\n- Waterproof IPX6"},
+{n:"RADIO BLUETOOTH CON LINTERNA",p:79,c:"parlantes",img:"images/parlantes7.png",desc:"- MEDIDAS 19.8*14.8CM\n- INCLUYE CABLE USB DE CARGA"},
+{n:"RADIO BOSSNEY BS R8027BTS CON PANEL SOLAR",p:80,c:"parlantes",img:"images/parlante panel solar.png",desc:"- FM/ AM/ SW1 6/ TF CARD\n- BLUETOOTH/ USB\n- PANEL SOLAR\n- TAMAÑO 15664105MM."},
+{n:"RADIO BOSSNEY CON 3 BANDAS",p:88,c:"parlantes",img:"images/parlante panel solar2.png",desc:"- MARCA BOSSNEY\n- BT/ FM/ AM/ SW/ USB/ TF\n- PANEL SOLAR\n- BATERIA 1200mAh\n- TAMAÑO 1995095MM"},
+{n:"SMART WATCH CON AUDIFONO BLUETOOTH 2 EN1",p:264,c:"smartwatch",img:"images/samrt4.png",desc:"- NUEVO MODELO\n- NOVEDAD 2024\n- APLICACIONES\n- PROCTECTOR DE RELOJ\n- ACCESORIOS COMPLETOS"},
+{n:"SMART WATCH REDONDO MILITAR",p:218,c:"smartwatch",img:"images/smart3.png",desc:"- CARGADOR INALAMBRICO\n- RECOMENDADO\n- ACCESORIOS COMPLETOS"},
+{n:"SMARTWATCH MILITAR G1",p:249,c:"smartwatch",img:"images/SMART7.png",desc:"- IP67 ACUATICO\n- TEMPERATURAS EXTREMAS\n- GRADO MILITAR\n- SUMERGIBLE HASTA 30 MT\n- BATERÍA DE 30 DÍAS\n- DEPORTES EXTREMOS\n- LLAMADAS Y REDES SOCIALES"},
+{n:"SMARTWATCH MILITAR PRO3",p:234,c:"smartwatch",img:"images/smart6.png",desc:"- IP67 ACUATICO\n- TEMPERATURAS EXTREMAS\n- GRADO MILITAR\n- SUMERGIBLE HASTA 30 MT\n- BATERÍA DE 30 DÍAS\n- DEPORTES EXTREMOS\n- LLAMADAS Y REDES SOCIALES"},
+{n:"SMARTWATCH T1000 ULTRA 3",p:72,c:"smartwatch",img:"images/smart2.png",desc:"- INCLUYE 7 CORREAS\n- NOTIFICACIONES\n- DIFERENTES ESTILOS DE MENU"},
+{n:"SMARTWATCH T900 PRO MAX L",p:72,c:"smartwatch",img:"images/smart.png",desc:"- COMPATIBLE ANDROID/ IOS\n- BATERIA 280mAh\n- NOTIFICACION DE REDES SOCIALES\n- TAMAÑO DE PANTALLA 2.4\""}
+];
+
+var cant = {};
+var currentFilter = 'todos';
+var currentModalProduct = null;
+
+function render(filtro) {
+filtro = filtro || 'todos';
+currentFilter = filtro;
+var cont = document.getElementById('productsList');
+if (!cont) return;
+cont.innerHTML = '';
+var filtrados = filtro === 'todos' ? productos : productos.filter(function(p) { return p.c === filtro; });
+if (filtrados.length === 0) {
+cont.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No hay productos en esta categoría</p></div>';
+return;
+}
+for (var j = 0; j < filtrados.length; j++) {
+var prod = filtrados[j];
+var idx = productos.indexOf(prod);
+if (typeof cant[idx] === 'undefined') cant[idx] = 0;
+var imagenHtml = prod.img.indexOf('images/') >= 0 ? '<img src="' + prod.img + '" alt="' + prod.n + '">' : prod.img;
+var card = document.createElement('div');
+card.className = 'product-card';
+card.onclick = function(i) { return function() { openModal(i); }; }(idx);
+card.innerHTML = '<div class="product-image">' + imagenHtml + '</div><div class="product-info"><div class="product-name">' + prod.n + '</div><div class="product-price">S/. ' + prod.p + '</div><div class="quantity-control"><button type="button" class="qty-btn" onclick="event.stopPropagation(); upd(' + idx + ',-1)">−</button><input type="number" class="qty-input" id="q' + idx + '" value="' + cant[idx] + '" readonly><button type="button" class="qty-btn" onclick="event.stopPropagation(); upd(' + idx + ',1)">+</button></div></div>';
+cont.appendChild(card);
+}
+}
+
+function openModal(idx) {
+currentModalProduct = idx;
+var prod = productos[idx];
+document.getElementById('modalTitle').textContent = prod.n;
+document.getElementById('modalPrice').textContent = 'S/. ' + prod.p;
+document.getElementById('modalDescription').textContent = prod.desc || 'Sin descripción disponible';
+document.getElementById('modalQty').value = cant[idx] || 0;
+var imagenHtml = prod.img.indexOf('images/') >= 0 ? '<img src="' + prod.img + '" alt="' + prod.n + '">' : '<div style="font-size:120px">' + prod.img + '</div>';
+document.getElementById('modalImage').innerHTML = imagenHtml;
+document.getElementById('productModal').style.display = 'block';
+document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+document.getElementById('productModal').style.display = 'none';
+document.body.style.overflow = 'auto';
+render(currentFilter);
+}
+
+function addToCartFromModal() {
+var qty = parseInt(document.getElementById('modalQty').value);
+if (qty > 0) closeModal();
+else alert('Por favor, selecciona al menos 1 unidad');
+}
+
+document.getElementById('modalBtnPlus').onclick = function() {
+upd(currentModalProduct, 1);
+document.getElementById('modalQty').value = cant[currentModalProduct];
+};
+
+document.getElementById('modalBtnMinus').onclick = function() {
+upd(currentModalProduct, -1);
+document.getElementById('modalQty').value = cant[currentModalProduct];
+};
+
+window.onclick = function(event) {
+if (event.target.id === 'productModal') closeModal();
+};
+
+function upd(i, ch) {
+cant[i] = Math.max(0, (cant[i] || 0) + ch);
+var inp = document.getElementById('q' + i);
+if (inp) inp.value = cant[i];
+calc();
+}
+
+function calc() {
+var tot = 0;
+for (var i = 0; i < productos.length; i++) tot += productos[i].p * (cant[i] || 0);
+document.getElementById('totalAmount').textContent = tot.toFixed(2);
+}
+
+var filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(function(btn) {
+btn.addEventListener('click', function() {
+filterBtns.forEach(function(b) { b.classList.remove('active'); });
+this.classList.add('active');
+render(this.getAttribute('data-category'));
+});
+});
+
+document.getElementById('orderForm').onsubmit = function(e) {
+e.preventDefault();
+var prods = [];
+var tot = 0;
+for (var i = 0; i < productos.length; i++) {
+if (cant[i] > 0) {
+prods.push(cant[i] + 'x ' + productos[i].n + ' (S/.' + (productos[i].p * cant[i]).toFixed(2) + ')');
+tot += productos[i].p * cant[i];
+}
+}
+if (prods.length === 0) {
+alert('Por favor, selecciona al menos un producto');
+return;
+}
+var data = {
+cliente: document.getElementById('nombre').value,
+correo: document.getElementById('correo').value,
+telefono: document.getElementById('telefono').value,
+direccion: document.getElementById('direccion').value,
+productos: prods.join(', '),
+total: tot.toFixed(2),
+comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
+};
+showConfirmationModal();
+document.getElementById('orderForm').reset();
+cant = {};
+render(currentFilter);
+calc();
+fetch(WEBHOOK_URL, {
+method: 'POST',
+headers: {'Content-Type': 'application/json'},
+body: JSON.stringify(data)
+}).then(function(response) {
+console.log('Pedido enviado correctamente');
+}).catch(function(err) {
+console.error('Error al enviar:', err);
+});
+};
+
+function showConfirmationModal() {
+document.getElementById('confirmationModal').style.display = 'block';
+document.body.style.overflow = 'hidden';
+}
+
+function closeConfirmationModal() {
+document.getElementById('confirmationModal').style.display = 'none';
+document.body.style.overflow = 'auto';
+}
+
+function getCategoryFromURL() {
+var urlParams = new URLSearchParams(window.location.search);
+var categoria = urlParams.get('categoria');
+return categoria || 'todos';
+}
+
+var initialCategory = getCategoryFromURL();
+if (initialCategory !== 'todos') {
+var filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(function(btn) {
+if (btn.getAttribute('data-category') === initialCategory) {
+filterBtns.forEach(function(b) { b.classList.remove('active'); });
+btn.classList.add('active');
+}
+});
+}
+
+render(initialCategory);
+
 (function() {
-    var addToCart = localStorage.getItem('addToCart');
-    if (addToCart) {
-        try {
-            var item = JSON.parse(addToCart);
-            // Buscar el producto por nombre
-            for (var i = 0; i < productos.length; i++) {
-                if (productos[i].n === item.nombre) {
-                    cant[i] = item.cantidad;
-                    var inp = document.getElementById('q' + i);
-                    if (inp) inp.value = cant[i];
-                    calc();
-                    // Hacer scroll al producto
-                    setTimeout(function() {
-                        var productCard = document.getElementById('q' + i);
-                        if (productCard && productCard.closest('.product-card')) {
-                            productCard.closest('.product-card').scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                        }
-                    }, 500);
-                    break;
-                }
-            }
-            // Limpiar localStorage
-            localStorage.removeItem('addToCart');
-        } catch (e) {
-            console.error('Error al procesar producto:', e);
-        }
-    }
+var addToCart = localStorage.getItem('addToCart');
+if (addToCart) {
+try {
+var item = JSON.parse(addToCart);
+for (var i = 0; i < productos.length; i++) {
+if (productos[i].n === item.nombre) {
+cant[i] = item.cantidad;
+var inp = document.getElementById('q' + i);
+if (inp) inp.value = cant[i];
+calc();
+setTimeout(function() {
+var productCard = document.getElementById('q' + i);
+if (productCard && productCard.closest('.product-card')) {
+productCard.closest('.product-card').scrollIntoView({
+behavior: 'smooth',
+block: 'center'
+});
+}
+}, 500);
+break;
+}
+}
+localStorage.removeItem('addToCart');
+} catch (e) {
+console.error('Error al procesar producto:', e);
+}
+}
 })();
-    </script>
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
